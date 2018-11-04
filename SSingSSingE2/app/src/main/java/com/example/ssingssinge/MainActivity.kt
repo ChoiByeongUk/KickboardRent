@@ -15,6 +15,12 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.selector
 import org.jetbrains.anko.startActivity
 
+/*
+    TODO : 예약기능 구현 필요(ReserveActivity)
+    TODO : QR코드를 이용한 예약 -> 대여 상태로 변경 기능 필요
+    TODO : PersonalInformationActivity 구현 필요
+    TODO : 로그인, 회원가입 기능 DB와 연동 필요
+ */
 class MainActivity : AppCompatActivity() {
 
     companion object {
@@ -38,10 +44,10 @@ class MainActivity : AppCompatActivity() {
 
         val loginManager: LoginManager = LoginManager.getInstance()!!
 
+        //우선 킥보드 조회화면을 먼저 출력
         supportFragmentManager.beginTransaction().replace(R.id.container, FindKickboardFragment()).commit()
 
         tabs.addOnTabSelectedListener(Selector())
-
 
         //로그인 되지 않았다면 로그인이나 회원가입부터 시작
         if(!loginManager.isLogin()) {
@@ -63,7 +69,7 @@ class MainActivity : AppCompatActivity() {
 
             SHOWLIST    ->  {
                 if(resultCode == OK) {
-                    reserve(data?.getLongExtra("SerialNumber", 0)!!)
+                    reserve(data?.getLongExtra("SerialNumber", 0)!!) // TODO : 예약기능 구현 필요
                 } else {
                     Toast.makeText(applicationContext, "Error", Toast.LENGTH_SHORT).show()
                 }
@@ -78,6 +84,7 @@ class MainActivity : AppCompatActivity() {
         startActivityForResult(intent, SHOWLIST)
     }
 
+    // TODO : 예약기능 구현 필요
     fun reserve(serialNumber: Long) {
         val intent:Intent = Intent(this, ReserveActivity::class.java)
         intent.putExtra("SerialNumber", serialNumber)

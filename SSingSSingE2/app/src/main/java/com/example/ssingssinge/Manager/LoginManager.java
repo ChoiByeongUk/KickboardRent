@@ -2,6 +2,9 @@ package com.example.ssingssinge.Manager;
 
 import com.example.ssingssinge.Data.User;
 
+/*
+    TODO : 로그인, 회원가입 DB와 연동되도록 구현 필요
+ */
 public class LoginManager {
 
     public static final int LOGIN = 1;
@@ -26,6 +29,13 @@ public class LoginManager {
         }
     }
 
+    //    TODO : 회원가입 기능 구현 필요(DB 연동)
+    public boolean join() {
+        return true;
+    }
+
+
+    //     TODO : 로그인 기능 구현 필요(DB 연동)
     public boolean login(User user) {
         this.user = user;
         if(user.getEmail().equals("test") && user.getPassword().equals("test")) {

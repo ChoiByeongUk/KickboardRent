@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.example.ssingssinge.R;
 
+// ListView에 킥보드 정보를 보여주기 위한 Class
 public class KickboardList extends LinearLayout {
     TextView textView;
     ImageView imageView;

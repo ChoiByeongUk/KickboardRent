@@ -18,6 +18,10 @@ import com.example.ssingssinge.R;
 
 import java.util.ArrayList;
 
+/*
+    TODO : DB에서 킥보드 정보를 읽어와야 함
+    TODO : 장소, 시간에 따라 예약가능한 킥보드 정보만 출력해야 함
+ */
 public class ShowKickboardListActivity extends AppCompatActivity {
 
     private KickboardAdapter kickboardListAdapter;

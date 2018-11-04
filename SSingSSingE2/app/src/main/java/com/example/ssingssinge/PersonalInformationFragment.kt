@@ -8,6 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
+/*
+    TODO : 예약 내역, 예약취소등 기능 구현 필요
+ */
 
 class PersonalInformationFragment : Fragment() {
     lateinit var rootView:View
