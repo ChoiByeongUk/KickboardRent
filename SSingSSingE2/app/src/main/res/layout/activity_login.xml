@@ -9,7 +9,7 @@
 
 
     <EditText
-            android:id="@+id/email"
+            android:id="@+id/emailText"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -25,7 +25,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-            android:id="@+id/password"
+            android:id="@+id/passwordText"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -38,7 +38,7 @@
             android:inputType="textPassword"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/email" />
+            app:layout_constraintTop_toBottomOf="@+id/emailText" />
 
     <Button
             android:id="@+id/loginButton"
@@ -54,6 +54,6 @@
             android:text="로그인"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/password" />
+            app:layout_constraintTop_toBottomOf="@+id/passwordText" />
 
 </android.support.constraint.ConstraintLayout>

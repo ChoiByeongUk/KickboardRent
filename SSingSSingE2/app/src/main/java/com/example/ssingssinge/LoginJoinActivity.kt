@@ -39,8 +39,10 @@ class LoginJoinActivity : AppCompatActivity() {
             }
 
             LoginManager.JOIN   ->  {
-                setResult(LoginManager.JOINOK)
-                finish()
+                if(resultCode == LoginManager.JOINOK) {
+                    setResult(LoginManager.JOINOK)
+                    finish()
+                }
             }
         }
     }

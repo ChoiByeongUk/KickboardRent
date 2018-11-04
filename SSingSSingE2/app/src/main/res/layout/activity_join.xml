@@ -7,7 +7,7 @@
                                              tools:context=".Activity.JoinActivity">
 
     <EditText
-            android:id="@+id/email"
+            android:id="@+id/emailText"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -16,45 +16,55 @@
             android:layout_marginTop="80dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:hint="E-mail"
-            android:inputType="textEmailAddress"
+            android:hint="E-mail(@knu.ac.kr)"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent" android:inputType="textEmailAddress"/>
 
     <EditText
-            android:id="@+id/password"
+            android:id="@+id/passwordText"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="100dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:hint="password"
             android:inputType="textPassword"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/email" />
+            app:layout_constraintTop_toBottomOf="@+id/emailText"/>
 
     <EditText
-            android:id="@+id/phone"
+            android:id="@+id/nameText"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="24dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:ems="10"
-            android:hint="Tel"
-            android:inputType="phone"
+            android:hint="name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/password" />
-
+            android:layout_marginTop="24dp" app:layout_constraintTop_toBottomOf="@+id/passwordText"
+            android:inputType="text"/>
+    <EditText
+            android:id="@+id/usernameText"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:hint="username"
+            android:inputType="text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="24dp" app:layout_constraintTop_toBottomOf="@+id/nameText"/>
     <Button
             android:id="@+id/joinButton"
             android:layout_width="200dp"
@@ -62,15 +72,34 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="24dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:onClick="onJoinButtonClicked"
             android:text="회원가입"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/phone" />
-
+            android:layout_marginTop="60dp" app:layout_constraintTop_toBottomOf="@+id/usernameText"/>
+    <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/editText3" android:layout_marginStart="40dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="40dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/emailText" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/passwordText"
+            app:layout_constraintVertical_bias="0.447" android:hint="인증번호"/>
+    <Button
+            android:text="인증"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/emailAuthButton" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="24dp"
+            android:layout_marginRight="24dp" android:layout_marginTop="24dp"
+            app:layout_constraintTop_toBottomOf="@+id/emailText" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/passwordText" app:layout_constraintVertical_bias="0.05"
+            app:layout_constraintStart_toEndOf="@+id/editText3" android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"/>
 
 
 </android.support.constraint.ConstraintLayout>

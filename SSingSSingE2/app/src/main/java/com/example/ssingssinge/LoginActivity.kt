@@ -8,9 +8,7 @@ import android.widget.Button
 import android.widget.TextView
 import com.example.ssingssinge.Data.User
 import com.example.ssingssinge.Manager.LoginManager
-import kotlinx.android.synthetic.main.activity_join.*
 import kotlinx.android.synthetic.main.activity_login.*
-import kotlinx.android.synthetic.main.activity_login_join.*
 
 /*
     TODO : 로그인 요청이 있으면 DB에서 정보를 읽어와 로그인 시도를 해야 함
@@ -24,17 +22,14 @@ class LoginActivity : AppCompatActivity() {
         val loginButton = findViewById(R.id.loginButton) as Button
 
         loginButton.setOnClickListener {
-            val email = findViewById(R.id.email) as TextView
-            val password = findViewById(R.id.password) as TextView
+            val email = emailText.text.toString()
+            val password = passwordText.text.toString()
 
-            val emailVal:String = email.text.toString()
-            val passwordVal:String = password.text.toString()
-
-            val user:User = User(1, "test user", "test_user_name", emailVal, passwordVal)
+            val user:User = User( "null", "null", email, password)
 
             if(LoginManager.getInstance().login(user)) { // TODO : login메소드 변경 필요
                 var intent = Intent()
-                intent.putExtra("id", emailVal)
+                intent.putExtra("id", email)
                 setResult(LoginManager.LOGINOK, intent)
                 finish()
             } else {

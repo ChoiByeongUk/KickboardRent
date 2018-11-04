@@ -3,6 +3,7 @@ package com.example.ssingssinge
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.constraint.ConstraintLayout
 import android.support.design.widget.Snackbar
 import android.support.design.widget.TabLayout
@@ -61,6 +62,9 @@ class MainActivity : AppCompatActivity() {
             LOGINJOIN   ->  {
                 if(resultCode == LoginManager.LOGINOK) {
                     Snackbar.make(mainLayout, "로그인 성공\nid : ${data?.getStringExtra("id")}", Snackbar.LENGTH_SHORT).show()
+                } else if(resultCode == LoginManager.JOINOK) {
+                    val pref = PreferenceManager.getDefaultSharedPreferences(this)
+                    Snackbar.make(mainLayout, "회원가입 성공\nid : ${pref.getString("username", "null")}", Snackbar.LENGTH_SHORT).show()
                 } else {
                     val intent = Intent(this, LoginJoinActivity::class.java)
                     startActivityForResult(intent, LOGINJOIN)
