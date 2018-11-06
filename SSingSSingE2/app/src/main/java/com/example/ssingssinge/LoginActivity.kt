@@ -9,6 +9,7 @@ import android.widget.TextView
 import com.example.ssingssinge.Data.User
 import com.example.ssingssinge.Manager.LoginManager
 import kotlinx.android.synthetic.main.activity_login.*
+import org.jetbrains.anko.defaultSharedPreferences
 
 /*
     TODO : 로그인 요청이 있으면 DB에서 정보를 읽어와 로그인 시도를 해야 함
@@ -28,9 +29,12 @@ class LoginActivity : AppCompatActivity() {
             val user:User = User( "null", "null", email, password)
 
             if(LoginManager.getInstance().login(user)) { // TODO : login메소드 변경 필요
-                var intent = Intent()
-                intent.putExtra("id", email)
-                setResult(LoginManager.LOGINOK, intent)
+                val pref = defaultSharedPreferences
+                val editor = pref.edit()
+
+                editor.putString("email", email).apply()
+
+                setResult(LoginManager.LOGINOK)
                 finish()
             } else {
                 setResult(LoginManager.LOGINFAILED)

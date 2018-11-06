@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentPagerAdapter
 import android.widget.Toast
 import com.example.ssingssinge.Manager.LoginManager
 import kotlinx.android.synthetic.main.activity_main.*
+import org.jetbrains.anko.defaultSharedPreferences
 import org.jetbrains.anko.selector
 import org.jetbrains.anko.startActivity
 
@@ -61,7 +62,8 @@ class MainActivity : AppCompatActivity() {
         when(requestCode) {
             LOGINJOIN   ->  {
                 if(resultCode == LoginManager.LOGINOK) {
-                    Snackbar.make(mainLayout, "로그인 성공\nid : ${data?.getStringExtra("id")}", Snackbar.LENGTH_SHORT).show()
+                    val pref = defaultSharedPreferences
+                    Snackbar.make(mainLayout, "로그인 성공\nid : ${pref.getString("email", "null")}", Snackbar.LENGTH_SHORT).show()
                 } else if(resultCode == LoginManager.JOINOK) {
                     val pref = PreferenceManager.getDefaultSharedPreferences(this)
                     Snackbar.make(mainLayout, "회원가입 성공\nid : ${pref.getString("username", "null")}", Snackbar.LENGTH_SHORT).show()
@@ -93,6 +95,11 @@ class MainActivity : AppCompatActivity() {
         val intent:Intent = Intent(this, ReserveActivity::class.java)
         intent.putExtra("SerialNumber", serialNumber)
         startActivityForResult(intent, RESERVE)
+    }
+
+    fun searchReservedKickboard() {
+        val showReservedKickboardFragment:Fragment = ShowReservedKickboardFragment()
+        supportFragmentManager.beginTransaction().replace(R.id.container, showReservedKickboardFragment).commit()
     }
 
 

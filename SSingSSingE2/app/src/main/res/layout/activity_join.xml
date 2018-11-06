@@ -84,21 +84,21 @@
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:ems="10"
-            android:id="@+id/editText3" android:layout_marginStart="40dp"
+            android:id="@+id/authText" android:layout_marginStart="40dp"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="40dp"
             android:layout_marginTop="8dp"
             app:layout_constraintTop_toBottomOf="@+id/emailText" android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toTopOf="@+id/passwordText"
             app:layout_constraintVertical_bias="0.447" android:hint="인증번호"/>
     <Button
-            android:text="인증"
+            android:text="전송"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/emailAuthButton" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="24dp"
             android:layout_marginRight="24dp" android:layout_marginTop="24dp"
             app:layout_constraintTop_toBottomOf="@+id/emailText" android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toTopOf="@+id/passwordText" app:layout_constraintVertical_bias="0.05"
-            app:layout_constraintStart_toEndOf="@+id/editText3" android:layout_marginStart="8dp"
+            app:layout_constraintStart_toEndOf="@+id/authText" android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"/>
 
 

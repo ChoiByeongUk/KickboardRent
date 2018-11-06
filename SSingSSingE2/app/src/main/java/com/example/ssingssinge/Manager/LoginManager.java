@@ -27,7 +27,7 @@ public class LoginManager {
     private static boolean loginStatus;
     private static boolean joinStatus;
     private static String webServer = "http://10.0.2.2:5000";
-
+    private static boolean process;
     private static LoginManager loginManager = null;
 
     private LoginManager() { this.loginStatus = false; }
@@ -39,11 +39,13 @@ public class LoginManager {
         } else {
             return loginManager;
         }
+
     }
 
     //    TODO : 회원가입 기능 구현 필요(DB 연동)
     public boolean join(final User user) {
         joinStatus = false;
+        process = false;
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
@@ -72,8 +74,10 @@ public class LoginManager {
 
                         int resCode = conn.getResponseCode();
                         Log.d("Join Res Code : ", "" + resCode);
-                        if(resCode == 200)
+                        if(resCode == 200) {
                             joinStatus = true;
+                            process = true;
+                        }
                     }
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
@@ -85,10 +89,9 @@ public class LoginManager {
 
             }
         });
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+
+        while(process == false) {
+
         }
         return joinStatus;
     }
@@ -97,6 +100,7 @@ public class LoginManager {
     //     TODO : 로그인 기능 구현 필요(DB 연동)
     public boolean login(final User user) {
         loginStatus = false;
+        process = false;
         String email = user.getEmail();
         String password = user.getPassword();
 
@@ -128,7 +132,7 @@ public class LoginManager {
                         Log.d("Login Res Code : ", "" + resCode);
                         if (resCode == 200)
                             loginStatus = true;
-
+                            process = true;
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -138,11 +142,7 @@ public class LoginManager {
             }
         });
 
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        while(process == false) { }
         return loginStatus;
     }
 
