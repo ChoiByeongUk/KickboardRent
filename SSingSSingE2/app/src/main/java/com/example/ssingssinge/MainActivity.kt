@@ -102,6 +102,11 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction().replace(R.id.container, showReservedKickboardFragment).commit()
     }
 
+    fun cancelReservation() {
+        val cancelReservationFragment:Fragment = CancelReservationFragment()
+        supportFragmentManager.beginTransaction().replace(R.id.container, cancelReservationFragment).commit()
+    }
+
 
     //탭 사용을 위한 클래스
     inner class Selector: TabLayout.OnTabSelectedListener {
