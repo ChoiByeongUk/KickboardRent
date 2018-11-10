@@ -83,10 +83,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun showKickboardList(location:String, hourForReserve: Int) {
+    fun showKickboardList(location:String, hourForReserve: Int, minuteForReserve: Int) {
         val intent:Intent = Intent(this, ShowKickboardListActivity::class.java)
         intent.putExtra("location", location)
         intent.putExtra("hour", hourForReserve)
+        intent.putExtra("minute", minuteForReserve)
         startActivityForResult(intent, SHOWLIST)
     }
 

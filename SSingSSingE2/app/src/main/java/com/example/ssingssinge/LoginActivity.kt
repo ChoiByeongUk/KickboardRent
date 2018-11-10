@@ -28,7 +28,9 @@ class LoginActivity : AppCompatActivity() {
 
             val user:User = User( "null", "null", email, password)
 
+            loginButton.text = "진행중"
             if(LoginManager.getInstance().login(user)) { // TODO : login메소드 변경 필요
+                loginButton.text="로그인"
                 val pref = defaultSharedPreferences
                 val editor = pref.edit()
 
@@ -37,6 +39,7 @@ class LoginActivity : AppCompatActivity() {
                 setResult(LoginManager.LOGINOK)
                 finish()
             } else {
+                loginButton.text="로그인"
                 setResult(LoginManager.LOGINFAILED)
                 Snackbar.make(activity_login, "로그인 실패", Snackbar.LENGTH_SHORT).show()
             }

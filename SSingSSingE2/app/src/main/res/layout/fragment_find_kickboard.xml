@@ -18,7 +18,9 @@
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintHorizontal_bias="0.502"
+            android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.29">
 
         <LinearLayout
                 android:id="@+id/linearLayout2"
@@ -42,32 +44,46 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="10dp"
                     android:text="예약할 위치 : "
-                    android:textSize="15dp" />
+                    android:textSize="15dp"/>
 
             <Spinner
                     android:id="@+id/spinner"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_marginLeft="20dp"
-                    android:layout_marginTop="20dp" />
+                    android:layout_marginTop="20dp"/>
         </LinearLayout>
 
-        <TimePicker
-                android:id="@+id/timePicker"
+        <LinearLayout
+                android:layout_marginTop="30dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toTopOf="@+id/search"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-                app:layout_constraintVertical_bias="0.555">
+                android:orientation="horizontal">
 
-        </TimePicker>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                      android:text="시간 : "
+                      android:textSize="15dp"/>
+
+            <Spinner
+                    android:id="@+id/hourSpinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+            </Spinner>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="분 : "
+                    android:textSize="15dp"/>
+
+            <Spinner
+                    android:id="@+id/minuteSpinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+            </Spinner>
+
+        </LinearLayout>
 
         <Button
                 android:id="@+id/search"
@@ -76,7 +92,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="30dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="24dp"
@@ -85,7 +101,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.502"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout3"/>
 
     </LinearLayout>
 

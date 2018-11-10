@@ -32,7 +32,9 @@ class JoinActivity : AppCompatActivity() {
             var user: User = User(name, username, email, password)
             val loginManager = LoginManager.getInstance()
 
+            joinButton.text = "진행중"
             if (loginManager.join(user)) {
+                joinButton.text="회원가입"
                 setResult(LoginManager.JOINOK)
                 val pref = PreferenceManager.getDefaultSharedPreferences(this)
                 val editor = pref.edit()
@@ -42,6 +44,7 @@ class JoinActivity : AppCompatActivity() {
 
                 finish()
             } else {
+                joinButton.text="회원가입"
                 setResult(LoginManager.JOINFAILED)
             }
         }

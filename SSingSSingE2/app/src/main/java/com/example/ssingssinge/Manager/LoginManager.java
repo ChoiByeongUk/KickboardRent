@@ -3,6 +3,7 @@ package com.example.ssingssinge.Manager;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.example.ssingssinge.Data.User;
+import com.example.ssingssinge.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -39,13 +40,13 @@ public class LoginManager {
         } else {
             return loginManager;
         }
-
     }
 
     //    TODO : 회원가입 기능 구현 필요(DB 연동)
     public boolean join(final User user) {
         joinStatus = false;
         process = false;
+
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
@@ -74,10 +75,10 @@ public class LoginManager {
 
                         int resCode = conn.getResponseCode();
                         Log.d("Join Res Code : ", "" + resCode);
-                        if(resCode == 200) {
+                        if(resCode == 200)
                             joinStatus = true;
-                            process = true;
-                        }
+
+                        process = true;
                     }
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
@@ -132,7 +133,8 @@ public class LoginManager {
                         Log.d("Login Res Code : ", "" + resCode);
                         if (resCode == 200)
                             loginStatus = true;
-                            process = true;
+
+                        process = true;
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -143,6 +145,7 @@ public class LoginManager {
         });
 
         while(process == false) { }
+
         return loginStatus;
     }
 

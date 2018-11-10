@@ -16,28 +16,28 @@
             android:layout_marginRight="8dp"
             android:layout_marginBottom="8dp"
             android:text="text"
-            android:textSize="20dp"
+            android:textSize="30dp"
             app:layout_constraintBottom_toTopOf="@+id/listView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"/>
 
     <ListView
             android:id="@+id/listView"
-            android:layout_width="372dp"
-            android:layout_height="435dp"
+            android:layout_width="0dp"
+            android:layout_height="508dp"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginBottom="8dp"
-            android:background="@android:color/holo_blue_light"
+            android:background="@android:color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintVertical_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.0">
 
     </ListView>
 

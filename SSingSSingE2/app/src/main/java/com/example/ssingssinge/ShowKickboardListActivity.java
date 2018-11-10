@@ -6,14 +6,10 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 
 import com.example.ssingssinge.Data.Kickboard;
+import com.example.ssingssinge.Data.KickboardAdapter;
 import com.example.ssingssinge.R;
 
 import java.util.ArrayList;
@@ -35,14 +31,18 @@ public class ShowKickboardListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_show_kickboard_list);
         init();
 
-        Toast.makeText(getApplicationContext(), "구현예정\n예약시간 : " + getIntent().getIntExtra("hour", 0), Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "구현예정\n예약시간 : " + getIntent().getIntExtra("hour", 0)
+                + "시 " + getIntent().getIntExtra("minute", 0) * 10 + "분\n", Toast.LENGTH_LONG).show();
 
         selectedKickboard = -1;
+
         String location;
         location = getIntent().getStringExtra("location");
+
         TextView textView = (TextView)findViewById(R.id.textView);
         textView.setText(location + "지역내의 킥보드 검색 결과");
-        kickboardListAdapter = new KickboardAdapter();
+
+        kickboardListAdapter = new KickboardAdapter(getApplicationContext());
 
         listView = findViewById(R.id.listView);
         if(location.equals("전체")) {
@@ -61,8 +61,10 @@ public class ShowKickboardListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Kickboard kickboard = (Kickboard)kickboardListAdapter.getItem(position);
+
                 Intent intent = new Intent();
-                intent.putExtra("SerialNumber", kickboard.getSerial());
+                intent.putExtra("SerialNumber", kickboard.getId());
+
                 setResult(MainActivity.OK, intent);
                 finish();
             }
@@ -75,58 +77,15 @@ public class ShowKickboardListActivity extends AppCompatActivity {
      */
     void init() {
         DB = new ArrayList<Kickboard>();
-        DB.add(new Kickboard("de2000", 1, "able", "경북대학교 정문"));
-        DB.add(new Kickboard("mijia", 2, "able", "경북대학교 북문"));
-        DB.add(new Kickboard("de2000", 3, "able", "경북대학교 북문"));
-        DB.add(new Kickboard("mijia", 4, "able", "경북대학교 북문"));
-        DB.add(new Kickboard("de2000", 5, "able", "경북대학교 정문"));
-        DB.add(new Kickboard("mijia", 6, "able", "경북대학교 정문"));
-        DB.add(new Kickboard("de2000", 7, "able", "경북대학교 정문"));
-        DB.add(new Kickboard("mijia", 8, "able", "경북대학교 북문"));
-        DB.add(new Kickboard("de2000", 9, "able", "경북대학교 북문"));
-        DB.add(new Kickboard("mijia", 10, "able", "경북대학교 북문"));
-    }
-
-    class KickboardAdapter extends BaseAdapter {
-        ArrayList<Kickboard> kickboards = new ArrayList();
-
-        @Override
-        public int getCount() {
-            return kickboards.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return kickboards.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return kickboards.get(position).getSerial();
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            KickboardList kickboardList = null;
-            if(kickboardList == null) {
-                kickboardList = new KickboardList(getApplicationContext());
-            } else {
-                kickboardList = (KickboardList) convertView;
-            }
-
-            Kickboard kickboard = kickboards.get(position);
-            kickboardList.setKickboardName(kickboard.getModel_name());
-            kickboardList.setKickboardImage(kickboard.getModel_name());
-            return kickboardList;
-        }
-
-        public void addItem(Kickboard item) {
-            kickboards.add(item);
-        }
-
-        public void clear() {
-            kickboards.clear();
-        }
+        DB.add(new Kickboard(1,"de2000",  "able", "경북대학교 정문"));
+        DB.add(new Kickboard(2,"mijia",  "able", "경북대학교 북문"));
+        DB.add(new Kickboard(3,"de2000",  "able", "경북대학교 북문"));
+        DB.add(new Kickboard(4,"mijia",  "able", "경북대학교 북문"));
+        DB.add(new Kickboard(5,"de2000",  "able", "경북대학교 정문"));
+        DB.add(new Kickboard(6,"mijia",  "able", "경북대학교 정문"));
+        DB.add(new Kickboard(7,"de2000", "able", "경북대학교 정문"));
+        DB.add(new Kickboard(8,"mijia", "able", "경북대학교 북문"));
+        DB.add(new Kickboard(9,"de2000", "able", "경북대학교 북문"));
+        DB.add(new Kickboard(10,"mijia",  "able", "경북대학교 북문"));
     }
 }
-
