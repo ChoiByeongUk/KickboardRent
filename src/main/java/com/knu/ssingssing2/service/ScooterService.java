@@ -1,8 +1,11 @@
 package com.knu.ssingssing2.service;
 
 import com.knu.ssingssing2.exception.BadRequestException;
+import com.knu.ssingssing2.model.scooter.Location;
 import com.knu.ssingssing2.model.scooter.Scooter;
+import com.knu.ssingssing2.payload.ApiResponse;
 import com.knu.ssingssing2.payload.PagedResponse;
+import com.knu.ssingssing2.payload.ScooterLocationRequest;
 import com.knu.ssingssing2.payload.ScooterResponse;
 import com.knu.ssingssing2.repository.ScooterRepository;
 import com.knu.ssingssing2.util.AppConstants;
@@ -15,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -50,6 +54,16 @@ public class ScooterService {
     }).collect(Collectors.toList());
 
     return scooterResponses;
+  }
+
+  public ScooterResponse updateScooterLocation(ScooterLocationRequest request) {
+    Scooter scooter = scooterRepository.findOneBySerial(request.getSerial());
+    Location newLocation = new Location(request.getLocation().getLatitude(), request.getLocation().getLongitude());
+
+    scooter.changeLocation(newLocation);
+    scooterRepository.save(scooter);
+
+    return ModelMapper.mapScooterToScooterResponse(scooter);
   }
 
   private void validatePageNumberAndSize(int page, int size) {

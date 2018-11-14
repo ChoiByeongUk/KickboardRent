@@ -1,8 +1,13 @@
 package com.knu.ssingssing2.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.knu.ssingssing2.api.ScooterController;
 import com.knu.ssingssing2.model.scooter.Scooter;
 import com.knu.ssingssing2.model.scooter.ScooterManufacture;
+import com.knu.ssingssing2.payload.Location;
+import com.knu.ssingssing2.payload.ScooterLocationRequest;
 import com.knu.ssingssing2.repository.ScooterManufactureRepository;
 import com.knu.ssingssing2.repository.ScooterRepository;
 import java.util.Random;
@@ -11,6 +16,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +24,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
@@ -53,6 +60,22 @@ public class ScooterControllerTest {
     logger.info(result.getResponse().getContentAsString());
   }
 
+  @Test
+  public void updateScooterLocation() throws Exception {
+    Location newLocation = new Location(36.123, 102.142);
+    ScooterLocationRequest request = new ScooterLocationRequest("ABCDEF", newLocation);
+
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+    ObjectWriter objectWriter = mapper.writer().withDefaultPrettyPrinter();
+    String requestJson = objectWriter.writeValueAsString(request);
+
+    mockMvc.perform(put("/api/scooters/location")
+        .contentType(MediaType.APPLICATION_JSON_UTF8)
+        .content(requestJson))
+        .andExpect(status().isOk());
+  }
+
   private void createDummyData() {
     ScooterManufacture scooterManufacture;
 
@@ -63,6 +86,7 @@ public class ScooterControllerTest {
       scooterRepository.save(new Scooter(scooterManufacture, "Nine Bot Series " + i, dummySerial(32)));
     }
 
+    scooterRepository.save(new Scooter(scooterManufacture, "Test Bot", "ABCDEF"));
   }
 
   private String dummySerial(int length) {

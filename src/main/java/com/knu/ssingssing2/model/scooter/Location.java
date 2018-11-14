@@ -10,11 +10,22 @@ public class Location {
 
   private double longitude;
 
+  private String locationName;
+
   public Location() { }
 
   public Location(double latitude, double longitude) {
     this.latitude = latitude;
     this.longitude = longitude;
+    updateLocationName();
+  }
+
+  private void updateLocationName() {
+    if (latitude == 0.0 && longitude == 0.0) {
+      this.locationName = "";
+    }
+
+    // GPS 좌표에 따라 locationName 지정
   }
 
   @Override
