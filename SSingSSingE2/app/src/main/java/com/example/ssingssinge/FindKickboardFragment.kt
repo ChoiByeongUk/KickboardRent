@@ -46,6 +46,7 @@ class FindKickboardFragment : Fragment(), OnItemSelectedListener {
         spinner.adapter = spinnerAdapter
         spinner.onItemSelectedListener = this
 
+        //시간, 분 선택을 위한 스피너
         hourAdapter = ArrayAdapter(context, android.R.layout.simple_list_item_1, hours)
         minuteAdapter = ArrayAdapter(context, android.R.layout.simple_list_item_1, minutes)
         val hourSpinner = rootView.findViewById(R.id.hourSpinner) as Spinner
@@ -71,6 +72,7 @@ class FindKickboardFragment : Fragment(), OnItemSelectedListener {
                 findMinute = position
             }
         }
+        
 
 
         val search: Button = rootView.findViewById(R.id.search)

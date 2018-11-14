@@ -29,7 +29,7 @@ public class KickboardAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return kickboards.get(position).getId();
+        return kickboards.get(position).getKickboard_id();
     }
 
     @Override
@@ -42,14 +42,20 @@ public class KickboardAdapter extends BaseAdapter {
         }
 
         Kickboard kickboard = kickboards.get(position);
-        kickboardList.setKickboardName(kickboard.getModel_name());
-        kickboardList.setKickboardImage(kickboard.getModel_name());
+        kickboardList.setKickboardName(kickboard.getKickboard_modelname());
+        if(kickboard.getKickboard_modelname().substring(0, 8).equals("Nine Bot")) {
+            kickboardList.setKickboardImage("ninebot");
+        } else {
+            kickboardList.setKickboardImage(kickboard.getKickboard_modelname());
+        }
         return kickboardList;
     }
 
     public void addItem(Kickboard item) {
         kickboards.add(item);
     }
+
+    public  void addItems(ArrayList<Kickboard> items) {kickboards.addAll(items);}
 
     public void clear() {
         kickboards.clear();

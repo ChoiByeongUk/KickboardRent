@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.defaultSharedPreferences
 import org.jetbrains.anko.selector
 import org.jetbrains.anko.startActivity
+import java.nio.channels.Selector
 
 /*
     TODO : 예약기능 구현 필요(ReserveActivity)
@@ -52,10 +53,10 @@ class MainActivity : AppCompatActivity() {
         tabs.addOnTabSelectedListener(Selector())
 
         //로그인 되지 않았다면 로그인이나 회원가입부터 시작
-        if(!loginManager.isLogin()) {
+        /*if(!loginManager.isLogin()) {
             val intent = Intent(this, LoginJoinActivity::class.java)
             startActivityForResult(intent, LOGINJOIN)
-        }
+        }*/
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
