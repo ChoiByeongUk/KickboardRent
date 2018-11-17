@@ -10,6 +10,7 @@ import com.example.ssingssinge.KickboardList;
 import java.util.ArrayList;
 
 public class KickboardAdapter extends BaseAdapter {
+
     ArrayList<Kickboard> kickboards = new ArrayList();
     Context context;
 
@@ -34,7 +35,9 @@ public class KickboardAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
         KickboardList kickboardList = null;
+
         if(kickboardList == null) {
             kickboardList = new KickboardList(context);
         } else {
@@ -43,6 +46,7 @@ public class KickboardAdapter extends BaseAdapter {
 
         Kickboard kickboard = kickboards.get(position);
         kickboardList.setKickboardName(kickboard.getKickboard_modelname());
+
         if(kickboard.getKickboard_modelname().substring(0, 8).equals("Nine Bot")) {
             kickboardList.setKickboardImage("ninebot");
         } else {

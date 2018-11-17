@@ -49,8 +49,9 @@ public class ShowKickboardListActivity extends AppCompatActivity {
         waiting = false;
         init();
 
-        Toast.makeText(getApplicationContext(), "구현예정\n예약시간 : " + getIntent().getIntExtra("hour", 0)
-                + "시 " + getIntent().getIntExtra("minute", 0) * 10 + "분\n", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "구현예정\n예약시간 : " + getIntent().getStringExtra("startDate")
+                + "부터\n" + getIntent().getStringExtra("endDate")+ "까지\n" +
+                "킥보드 종류 : " + getIntent().getStringExtra("type"), Toast.LENGTH_LONG).show();
 
         selectedKickboard = -1;
 
@@ -77,21 +78,30 @@ public class ShowKickboardListActivity extends AppCompatActivity {
             }
         });
         listView.setAdapter(kickboardListAdapter);
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        setResult(MainActivity.BACK_PRESSED);
+        finish();
     }
 
     /*
-    DB추가 후 삭제할 예정
-    킥보드 정보 초기화 위한 코드
-     */
+        DB추가 후 삭제할 예정
+        킥보드 정보 초기화 위한 코드
+         */
     void init() {
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
                 String requestUrl = webserver + "scooters";
+
                 try {
                     URL url = new URL(requestUrl);
 
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
                     if (conn != null) {
                         conn.setConnectTimeout(10000);
                         conn.setRequestMethod("GET");
@@ -102,9 +112,11 @@ public class ShowKickboardListActivity extends AppCompatActivity {
                         BufferedReader reader = new BufferedReader(isr);
                         String tempStr;
                         StringBuilder builder = new StringBuilder();
+
                         while((tempStr = reader.readLine()) != null) {
                             builder.append(tempStr + "\n");
                         }
+
                         isr.close();
                         reader.close();
 

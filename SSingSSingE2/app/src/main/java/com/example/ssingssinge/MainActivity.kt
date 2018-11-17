@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
         const val RESERVE = 3
         const val OK = 100
         const val FAIL = 200
+        const val BACK_PRESSED = 1000
     }
 
     private val findKickboardFragment:FindKickboardFragment = FindKickboardFragment()
@@ -84,11 +85,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun showKickboardList(location:String, hourForReserve: Int, minuteForReserve: Int) {
+    fun showKickboardList(location:String, kickboardType: String, startDate:String, endDate: String) {
         val intent:Intent = Intent(this, ShowKickboardListActivity::class.java)
         intent.putExtra("location", location)
-        intent.putExtra("hour", hourForReserve)
-        intent.putExtra("minute", minuteForReserve)
+        intent.putExtra("type", kickboardType)
+        intent.putExtra("startDate", startDate)
+        intent.putExtra("endDate", endDate)
         startActivityForResult(intent, SHOWLIST)
     }
 
