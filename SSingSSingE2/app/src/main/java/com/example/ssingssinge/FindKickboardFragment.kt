@@ -24,6 +24,7 @@ import java.util.*
     TODO : 설정한 시간에 따라 예약가능한 킥보드들만 목록에 보여줘야 함
 */
 
+//commit 테스트용 주석
 //장소, 시간에 따라 예약가능한 킥보드목록을 조회
 class FindKickboardFragment : Fragment(), OnItemSelectedListener {
 
