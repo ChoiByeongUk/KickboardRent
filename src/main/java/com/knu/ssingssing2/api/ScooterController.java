@@ -18,8 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/scooters")
 public class ScooterController {
 
+  private final ScooterService scooterService;
+
   @Autowired
-  private ScooterService scooterService;
+  public ScooterController(ScooterService scooterService) {
+    this.scooterService = scooterService;
+  }
 
   @GetMapping
   public List<ScooterResponse> getAllScootersWithoutPaging() {
@@ -31,6 +35,7 @@ public class ScooterController {
       ScooterLocationRequest request) {
 
     scooterService.updateScooterLocation(request);
-    return new ResponseEntity(new ApiResponse(true, "success change scooter current location"), HttpStatus.OK);
+    return new ResponseEntity<>(new ApiResponse(true, "success change scooter current location"),
+        HttpStatus.OK);
   }
 }

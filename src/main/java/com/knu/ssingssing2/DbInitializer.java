@@ -14,11 +14,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class DbInitializer implements CommandLineRunner {
 
-  @Autowired
-  private ScooterRepository scooterRepository;
+  private final ScooterRepository scooterRepository;
+
+  private final ScooterManufactureRepository scooterManufactureRepository;
 
   @Autowired
-  private ScooterManufactureRepository scooterManufactureRepository;
+  public DbInitializer(ScooterRepository scooterRepository,
+      ScooterManufactureRepository scooterManufactureRepository) {
+    this.scooterRepository = scooterRepository;
+    this.scooterManufactureRepository = scooterManufactureRepository;
+  }
 
   @Override
   public void run(String... args) {

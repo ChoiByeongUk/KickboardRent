@@ -1,9 +1,8 @@
 package com.knu.ssingssing2.service;
 
 import com.knu.ssingssing2.exception.BadRequestException;
-import com.knu.ssingssing2.model.scooter.Location;
+import com.knu.ssingssing2.model.Location;
 import com.knu.ssingssing2.model.scooter.Scooter;
-import com.knu.ssingssing2.payload.ApiResponse;
 import com.knu.ssingssing2.payload.PagedResponse;
 import com.knu.ssingssing2.payload.ScooterLocationRequest;
 import com.knu.ssingssing2.payload.ScooterResponse;
@@ -18,14 +17,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ScooterService {
 
+  private final ScooterRepository scooterRepository;
+
   @Autowired
-  private ScooterRepository scooterRepository;
+  public ScooterService(ScooterRepository scooterRepository) {
+    this.scooterRepository = scooterRepository;
+  }
 
   public PagedResponse<ScooterResponse> getAllScooters(int page, int size) {
     validatePageNumberAndSize(page, size);
@@ -38,9 +40,8 @@ public class ScooterService {
           scooters.getSize(), scooters.getTotalElements(), scooters.getTotalPages(), scooters.isLast());
     }
 
-    List<ScooterResponse> scooterResponses = scooters.map(scooter -> {
-      return ModelMapper.mapScooterToScooterResponse(scooter);
-    }).getContent();
+    List<ScooterResponse> scooterResponses = scooters.map(ModelMapper::mapScooterToScooterResponse)
+        .getContent();
 
     return new PagedResponse<>(scooterResponses, scooters.getNumber(),
       scooters.getSize(), scooters.getTotalElements(), scooters.getTotalPages(), scooters.isLast());
@@ -48,17 +49,13 @@ public class ScooterService {
 
   public List<ScooterResponse> getAllScooters() {
     List<Scooter> scooters = scooterRepository.findAll();
-
-    List<ScooterResponse> scooterResponses = scooters.stream().map(scooter -> {
-      return ModelMapper.mapScooterToScooterResponse(scooter);
-    }).collect(Collectors.toList());
-
-    return scooterResponses;
+    return scooters.stream().map(
+        ModelMapper::mapScooterToScooterResponse).collect(Collectors.toList());
   }
 
   public ScooterResponse updateScooterLocation(ScooterLocationRequest request) {
     Scooter scooter = scooterRepository.findOneBySerial(request.getSerial());
-    Location newLocation = new Location(request.getLocation().getLatitude(), request.getLocation().getLongitude());
+    Location newLocation = request.getLocation().toEntity();
 
     scooter.changeLocation(newLocation);
     scooterRepository.save(scooter);

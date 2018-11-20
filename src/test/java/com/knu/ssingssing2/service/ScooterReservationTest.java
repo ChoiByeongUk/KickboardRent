@@ -60,7 +60,8 @@ public class ScooterReservationTest {
     LocalDateTime end = LocalDateTime.parse("2018-11-11T14:00:00.00");
     ReservationTime reservationTime = new ReservationTime(start, end);
 
-    ApiResponse response = reservationService.reservation(scooter.getId(), returnLocation, reservationTime);
+    ApiResponse response = reservationService
+        .reservation(scooter.getId(), returnLocation, reservationTime);
     assertThat(response.getSuccess(), is(true));
   }
 
@@ -87,7 +88,8 @@ public class ScooterReservationTest {
     LocalDateTime end = LocalDateTime.parse("2018-11-11T14:30:00.00");
     ReservationTime time = new ReservationTime(start, end);
 
-    List<ScooterResponse> scooters = reservationService.findAllAvailableReservationScootersWithModelAndLocation("Nine Bot", rentalLocation, time);
+    List<ScooterResponse> scooters = reservationService
+        .findAllAvailableReservationScootersWithModelAndLocation("Nine Bot", rentalLocation, time);
     assertThat(scooters.size(), is(7));
   }
 
@@ -99,7 +101,8 @@ public class ScooterReservationTest {
     LocalDateTime end = LocalDateTime.parse("2018-11-11T14:30:00.00");
     ReservationTime time = new ReservationTime(start, end);
 
-    List<ScooterResponse> scooters = reservationService.findAllAvailableReservationScootersWithModelAndLocation("Nine Bot", rentalLocation, time);
+    List<ScooterResponse> scooters = reservationService
+        .findAllAvailableReservationScootersWithModelAndLocation("Nine Bot", rentalLocation, time);
     assertThat(scooters.size(), is(0));
   }
 
@@ -125,7 +128,8 @@ public class ScooterReservationTest {
     LocalDateTime end = LocalDateTime.parse("2018-11-11T14:30:00.00");
     ReservationTime time = new ReservationTime(start, end);
 
-    List<ScooterResponse> scooters = reservationService.findAllAvailableReservationScootersWithLocation(rentalLocation, time);
+    List<ScooterResponse> scooters = reservationService
+        .findAllAvailableReservationScootersWithLocation(rentalLocation, time);
     assertThat(scooters.size(), is(8));
   }
 
@@ -150,7 +154,8 @@ public class ScooterReservationTest {
     LocalDateTime end = LocalDateTime.parse("2018-11-11T14:30:00.00");
     ReservationTime time = new ReservationTime(start, end);
 
-    List<ScooterResponse> scooters = reservationService.findAllAvailableReservationScootersWithLocation(null, time);
+    List<ScooterResponse> scooters = reservationService
+        .findAllAvailableReservationScootersWithLocation(null, time);
     assertThat(scooters.size(), is(8));
   }
 

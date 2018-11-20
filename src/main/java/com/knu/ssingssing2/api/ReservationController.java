@@ -23,8 +23,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/reservations")
 public class ReservationController {
 
+  private final ReservationService reservationService;
+
   @Autowired
-  private ReservationService reservationService;
+  public ReservationController(ReservationService reservationService) {
+    this.reservationService = reservationService;
+  }
 
   @GetMapping("/{modelName}")
   public ResponseEntity<?> getAllAvailableReservationScooters(
@@ -39,11 +43,12 @@ public class ReservationController {
     responses = reservationService.findAllAvailableReservationScootersWithModelAndLocation(
         modelName, location, time);
 
-    if (responses.size() == 0)
-      return new ResponseEntity<ApiResponse>(
+    if (responses.size() == 0) {
+      return new ResponseEntity<>(
           new ApiResponse(false, "can not find available scooters"),
           HttpStatus.OK);
-    return new ResponseEntity<List<ScooterResponse>>(responses, HttpStatus.OK);
+    }
+    return new ResponseEntity<>(responses, HttpStatus.OK);
   }
 
   @GetMapping
@@ -58,19 +63,21 @@ public class ReservationController {
 
     responses = reservationService.findAllAvailableReservationScootersWithLocation(location, time);
 
-    if (responses.size() == 0)
-      return new ResponseEntity<ApiResponse>(
+    if (responses.size() == 0) {
+      return new ResponseEntity<>(
           new ApiResponse(false, "can not find available scooters"),
           HttpStatus.OK);
-    return new ResponseEntity<List<ScooterResponse>>(responses, HttpStatus.OK);
+    }
+    return new ResponseEntity<>(responses, HttpStatus.OK);
   }
 
   @PostMapping
-  public ResponseEntity<ApiResponse> reservationScooter(@RequestBody ScooterReservationRequest request) {
+  public ResponseEntity<ApiResponse> reservationScooter(
+      @RequestBody ScooterReservationRequest request) {
     ApiResponse apiResponse = reservationService.reservation(request.getScooterId(),
         request.getReturnLocation().toEntity(), request.getReservationTime().toEntity());
 
-    return new ResponseEntity<ApiResponse>(apiResponse, HttpStatus.CREATED);
+    return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
   }
 
 }

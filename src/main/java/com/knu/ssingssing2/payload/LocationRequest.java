@@ -11,11 +11,21 @@ public class LocationRequest {
   @JsonProperty
   private double longitude;
 
-  @JsonProperty
-  private String location;
+  @JsonProperty("location_name")
+  private String locationName;
+
+  public LocationRequest() {
+  }
+
+  public LocationRequest(double latitude, double longitude, String locationName) {
+    this.latitude = latitude;
+    this.longitude = longitude;
+    this.locationName = locationName;
+  }
 
   public Location toEntity() {
-    return new Location(latitude, longitude, location);
+    return new Location(latitude, longitude, locationName);
   }
+
 
 }

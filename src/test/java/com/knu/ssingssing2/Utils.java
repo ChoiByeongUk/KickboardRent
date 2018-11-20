@@ -10,11 +10,12 @@ public class Utils {
 
     String chars[] = "A B C D E F G H I J K L M N O P Q R S T U V W X Y Z".split(" ");
 
-    for (int i=0 ; i < length; i++) {
-      if (i != 0 && i % 8 == 0)
+    for (int i = 0; i < length; i++) {
+      if (i != 0 && i % 8 == 0) {
         sb.append("-");
-      else
+      } else {
         sb.append(chars[random.nextInt(chars.length)]);
+      }
     }
 
     return sb.toString();

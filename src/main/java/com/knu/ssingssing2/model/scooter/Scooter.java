@@ -53,7 +53,7 @@ public class Scooter {
     this.modelName = modelName;
     this.serial = serial;
     this.state = ScooterState.AVAILABLE;
-    this.location = new Location(0, 0,  null);
+    this.location = new Location(0, 0, null);
   }
 
   public Scooter(Long id, ScooterManufacture manufacture, String modelName, String serial,
@@ -85,9 +85,10 @@ public class Scooter {
   }
 
   public boolean isReserved(ReservationTime time) {
-    for(Reservation reservation : reservations) {
-      if (reservation.isDuplicatedTime(time))
+    for (Reservation reservation : reservations) {
+      if (reservation.isDuplicatedTime(time)) {
         return true;
+      }
     }
     return false;
   }

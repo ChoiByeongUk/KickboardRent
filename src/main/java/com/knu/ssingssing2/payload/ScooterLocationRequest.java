@@ -9,13 +9,12 @@ public class ScooterLocationRequest {
   private String serial;
 
   @NotNull
-  private Location location;
+  private LocationRequest location;
 
   public ScooterLocationRequest() {
   }
 
-  public ScooterLocationRequest(@NotBlank String serial,
-      @NotNull Location location) {
+  public ScooterLocationRequest(String serial, LocationRequest location) {
     this.serial = serial;
     this.location = location;
   }
@@ -24,7 +23,7 @@ public class ScooterLocationRequest {
     return serial;
   }
 
-  public Location getLocation() {
+  public LocationRequest getLocation() {
     return location;
   }
 }
