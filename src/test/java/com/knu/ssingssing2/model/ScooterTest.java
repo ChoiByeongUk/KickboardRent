@@ -1,14 +1,13 @@
 package com.knu.ssingssing2.model;
 
-import com.knu.ssingssing2.model.scooter.Location;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
 import com.knu.ssingssing2.model.scooter.Scooter;
 import com.knu.ssingssing2.model.scooter.ScooterManufacture;
 import com.knu.ssingssing2.model.scooter.ScooterState;
 import org.junit.Before;
 import org.junit.Test;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.junit.Assert.assertThat;
 
 public class ScooterTest {
 
@@ -33,9 +32,7 @@ public class ScooterTest {
 
   @Test
   public void changeLocation() {
-    scooter.changeLocation(new Location(35.886233, 128.609141));
-    assertThat(scooter.getLocation(), is(new Location(35.886233, 128.609141)));
-    scooter.changeLocation(new Location(35.892308, 128.610877));
-    assertThat(scooter.getLocation(), not(new Location(35.886233, 128.609141)));
+    scooter.changeLocation(new Location(35.886233, 128.609141, "경북대 정문"));
+    assertThat(scooter.getLocation(), is(new Location(35.886233, 128.609141, "경북대 정문")));
   }
 }
