@@ -1,7 +1,9 @@
 package com.knu.ssingssing2;
 
+import com.knu.ssingssing2.model.Location;
 import com.knu.ssingssing2.model.scooter.Scooter;
 import com.knu.ssingssing2.model.scooter.ScooterManufacture;
+import com.knu.ssingssing2.model.scooter.ScooterState;
 import com.knu.ssingssing2.repository.ScooterManufactureRepository;
 import com.knu.ssingssing2.repository.ScooterRepository;
 import java.util.Random;
@@ -19,7 +21,7 @@ public class DbInitializer implements CommandLineRunner {
   private ScooterManufactureRepository scooterManufactureRepository;
 
   @Override
-  public void run(String... args) throws Exception {
+  public void run(String... args) {
     createDummyData();
   }
 
@@ -29,10 +31,15 @@ public class DbInitializer implements CommandLineRunner {
     scooterManufacture = new ScooterManufacture("Xiomi");
     scooterManufactureRepository.save(scooterManufacture);
 
-    for (int i = 1; i <= 100; i++) {
-      scooterRepository.save(new Scooter(scooterManufacture, "Nine Bot Series " + i, dummySerial(32)));
+    for (int i = 1; i <= 20; i++) {
+      scooterRepository.save(Scooter.builder()
+          .manufacture(scooterManufacture)
+          .modelName("Nine Bot")
+          .serial(dummySerial(32))
+          .state(ScooterState.AVAILABLE)
+          .location(new Location(200, 200, "경북대 쪽문"))
+          .build());
     }
-
   }
 
   private String dummySerial(int length) {

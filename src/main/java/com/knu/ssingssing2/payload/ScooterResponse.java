@@ -1,7 +1,7 @@
 package com.knu.ssingssing2.payload;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.knu.ssingssing2.model.scooter.Location;
+import com.knu.ssingssing2.model.Location;
 import lombok.Getter;
 import lombok.Setter;
 

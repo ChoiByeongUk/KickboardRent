@@ -6,7 +6,7 @@ public enum ScooterState {
     public boolean isAvailable() {
       return true;
     }
-  }, BROKEN, REPAIR;
+  }, BROKEN, REPAIR, USING;
 
   public boolean isAvailable() {
     return false;
