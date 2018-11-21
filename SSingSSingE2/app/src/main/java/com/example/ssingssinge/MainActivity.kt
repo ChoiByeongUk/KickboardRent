@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.widget.Toast
+import com.example.ssingssinge.Data.Kickboard
 import com.example.ssingssinge.Manager.LoginManager
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.defaultSharedPreferences
@@ -77,7 +78,13 @@ class MainActivity : AppCompatActivity() {
 
             SHOWLIST    ->  {
                 if(resultCode == OK) {
-                    reserve(data?.getLongExtra("SerialNumber", 0)!!) // TODO : 예약기능 구현 필요
+                    var kickboard_id = data?.getIntExtra("kickboard_id", 0)!!
+                    var latitude = data?.getDoubleExtra("return_location_latitude", 0.0)!!
+                    var longitude = data?.getDoubleExtra("return_location_longitude", 0.0)!!
+                    var location_name = data?.getStringExtra("return_location_location_name")!!
+                    var start_time = data?.getStringExtra("reservation_time_start_time")!!
+                    var end_time = data?.getStringExtra("reservation_time_end_time")!!
+                    reserve(kickboard_id, latitude, longitude, location_name, start_time, end_time)// TODO : 예약기능 구현 필요
                 } else {
                     Toast.makeText(applicationContext, "Error", Toast.LENGTH_SHORT).show()
                 }
@@ -88,16 +95,22 @@ class MainActivity : AppCompatActivity() {
     fun showKickboardList(location:String, kickboardType: String, startDate:String, endDate: String) {
         val intent:Intent = Intent(this, ShowKickboardListActivity::class.java)
         intent.putExtra("location", location)
-        intent.putExtra("type", kickboardType)
+        intent.putExtra("kickboardType", kickboardType)
         intent.putExtra("startDate", startDate)
         intent.putExtra("endDate", endDate)
         startActivityForResult(intent, SHOWLIST)
     }
 
     // TODO : 예약기능 구현 필요
-    fun reserve(serialNumber: Long) {
+    fun reserve(kickboard_id: Int, latitude: Double, longitude: Double, location_name: String, start_time: String, end_time: String) {
         val intent:Intent = Intent(this, ReserveActivity::class.java)
-        intent.putExtra("SerialNumber", serialNumber)
+
+        intent.putExtra("kickboard_id", kickboard_id)
+        intent.putExtra("return_location_latitude", latitude)
+        intent.putExtra("return_location_longitude", longitude)
+        intent.putExtra("return_location_location_name", location_name)
+        intent.putExtra("reservation_time_start_time", start_time)
+        intent.putExtra("reservation_time_end_time", end_time)
         startActivityForResult(intent, RESERVE)
     }
 

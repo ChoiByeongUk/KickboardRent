@@ -13,8 +13,10 @@ import android.widget.*;
 
 import com.example.ssingssinge.Data.Kickboard;
 import com.example.ssingssinge.Data.KickboardAdapter;
+import com.example.ssingssinge.Data.Location;
 import com.example.ssingssinge.R;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
@@ -29,6 +31,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Random;
 
 /*
     TODO : DB에서 킥보드 정보를 읽어와야 함
@@ -37,26 +40,19 @@ import java.util.ArrayList;
 public class ShowKickboardListActivity extends AppCompatActivity {
 
     private KickboardAdapter kickboardListAdapter;
-    private ArrayList<Kickboard> kickboardList = new ArrayList<>(); // DB 추가 후 삭제예정
+    private ArrayList<Kickboard> kickboardList = new ArrayList<>();
     private ListView listView;
-    private int selectedKickboard;
-    public static final String webserver = "http://10.0.2.2:8080/api/";
+    public static final String webserver = "http://10.0.2.2:8080/api/reservations";
     private static boolean waiting = false;
+    private String location;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_kickboard_list);
         waiting = false;
-        init();
-
-        Toast.makeText(getApplicationContext(), "구현예정\n예약시간 : " + getIntent().getStringExtra("startDate")
-                + "부터\n" + getIntent().getStringExtra("endDate")+ "까지\n" +
-                "킥보드 종류 : " + getIntent().getStringExtra("type"), Toast.LENGTH_LONG).show();
-
-        selectedKickboard = -1;
-
-        String location;
         location = getIntent().getStringExtra("location");
+        init();
+        Log.d("대여가능 킥보드 수 : ", kickboardList.size()+"");
 
         TextView textView = (TextView)findViewById(R.id.textView);
         textView.setText(location + "지역내의 킥보드 검색 결과");
@@ -71,7 +67,13 @@ public class ShowKickboardListActivity extends AppCompatActivity {
                 Kickboard kickboard = (Kickboard)kickboardListAdapter.getItem(position);
 
                 Intent intent = new Intent();
-                intent.putExtra("SerialNumber", kickboard.getKickboard_id());
+                intent.putExtra("kickboard_id", kickboard.getKickboard_id());
+                intent.putExtra("return_location_latitude", kickboard.getKickboard_location().getLatitude());
+                intent.putExtra("return_location_longitude", kickboard.getKickboard_location().getLongitude());
+                intent.putExtra("return_location_location_name", kickboard.getKickboard_location().getLocationName());
+                intent.putExtra("reservation_time_start_time", getIntent().getStringExtra("startDate"));
+                intent.putExtra("reservation_time_end_time", getIntent().getStringExtra("endDate"));
+
 
                 setResult(MainActivity.OK, intent);
                 finish();
@@ -87,15 +89,15 @@ public class ShowKickboardListActivity extends AppCompatActivity {
         finish();
     }
 
-    /*
-        DB추가 후 삭제할 예정
-        킥보드 정보 초기화 위한 코드
-         */
     void init() {
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
-                String requestUrl = webserver + "scooters";
+                String requestUrl = webserver + "?start=" + getIntent().getStringExtra("startDate")
+                        + "&end=" + getIntent().getStringExtra("endDate");
+                if(!location.equals("전체")) {
+                    requestUrl += "&location=" + location;
+                }
 
                 try {
                     URL url = new URL(requestUrl);
@@ -125,12 +127,17 @@ public class ShowKickboardListActivity extends AppCompatActivity {
 
                         JSONArray jsonArray = new JSONArray(result);
 
-
                         for(int i=0; i<jsonArray.length() ; i++) {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            JSONObject locationObject = jsonObject.getJSONObject("kickboard_location");
+
+                            Location kickboardLocation = new Location(locationObject.getDouble("latitude"),
+                                        locationObject.getDouble("longitude"), locationObject.getString("location_name"));
+
                             Kickboard kickboard = new Kickboard(jsonObject.getInt("kickboard_id"), jsonObject.getString("kickboard_manufacture"),
                                     jsonObject.getString("kickboard_modelname"), jsonObject.getString("kickboard_serial"),
-                                    jsonObject.getString("kickboard_state"), jsonObject.getString("kickboard_location"));
+                                    jsonObject.getString("kickboard_state"), kickboardLocation);
+
                             kickboardList.add(kickboard);
                         }
                     }

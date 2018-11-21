@@ -24,14 +24,13 @@ import java.util.*
     TODO : 설정한 시간에 따라 예약가능한 킥보드들만 목록에 보여줘야 함
 */
 
-//commit 테스트용 주석3
 //장소, 시간에 따라 예약가능한 킥보드목록을 조회
 class FindKickboardFragment : Fragment(), OnItemSelectedListener {
 
     lateinit var mainActivity:MainActivity
     private var clickedItem = -1
 
-    var locations: Array<String> = arrayOf("전체", "경북대학교 정문", "경북대학교 북문")
+    var locations: Array<String> = arrayOf("전체", "경북대 쪽문", "경북대 북문")
     var kickboardType: Array<String> = arrayOf("Xiaomi Mijia", "Ninebot Series", "Icabot Kurrus")
 
     var findLocation = locations[0]
@@ -40,6 +39,10 @@ class FindKickboardFragment : Fragment(), OnItemSelectedListener {
     var endHour:Int = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
     var endMinute:Int = Calendar.getInstance().get(Calendar.MINUTE)
     var findKickboardType = kickboardType[0]
+    var selectedStartHour:Boolean = false
+    var selectedStartMinute:Boolean = false
+    var selectedEndHour:Boolean = false
+    var selectedEndMinute:Boolean = false
 
     lateinit var rootView:View
 
@@ -62,7 +65,6 @@ class FindKickboardFragment : Fragment(), OnItemSelectedListener {
         kickboardTypeSpinner.adapter = kickboardTypeSpinnerAdaper
         kickboardTypeSpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
-
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -80,17 +82,21 @@ class FindKickboardFragment : Fragment(), OnItemSelectedListener {
 
         startHourSpinner?.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
+                selectedStartHour = false
             }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 startHour = position
+                selectedStartHour = true
             }
         }
 
         startMinuteSpinner?.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
+                selectedStartMinute = false
             }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 startMinute = position*10
+                selectedStartMinute = true
             }
         }
 
@@ -104,36 +110,48 @@ class FindKickboardFragment : Fragment(), OnItemSelectedListener {
 
         endHourSpinner?.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
+                selectedEndHour = false
             }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 endHour = position
+                selectedEndHour = true
             }
         }
 
         endMinuteSpinner?.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
+                selectedEndMinute = false
             }
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 endMinute = position*10
+                selectedEndMinute = true
             }
         }
 
         val search: Button = rootView.findViewById(R.id.search)
         search.setOnClickListener {
-            if(findLocation != null) {
-                val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-                val startDate = Date()
+            val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+            val startDate = Date()
+            startDate.seconds = 0
+            if(selectedStartHour == true || selectedStartMinute == true) {
                 startDate.hours = startHour
                 startDate.minutes = startMinute
+            } else {
+                startDate.hours = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+                startDate.minutes = Calendar.getInstance().get(Calendar.MINUTE)
+            }
 
-                val endDate = Date()
+            val endDate = Date()
+            endDate.seconds = 0
+            if(selectedEndHour == true || selectedEndMinute == true) {
                 endDate.hours = endHour
                 endDate.minutes = endMinute
-
-                mainActivity.showKickboardList(findLocation, findKickboardType, sdf.format(startDate), sdf.format(endDate)) // TODO : 장소, 시간에 따라 DB에서 이용가능한 킥보드만 골라서 보여줘야 함
             } else {
-                Toast.makeText(context, "back", Toast.LENGTH_SHORT).show()
+                endDate.hours = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+                endDate.minutes = Calendar.getInstance().get(Calendar.MINUTE)
             }
+
+            mainActivity.showKickboardList(findLocation, findKickboardType, sdf.format(startDate), sdf.format(endDate)) // TODO : 장소, 시간에 따라 DB에서 이용가능한 킥보드만 골라서 보여줘야 함
         }
         return rootView
     }
