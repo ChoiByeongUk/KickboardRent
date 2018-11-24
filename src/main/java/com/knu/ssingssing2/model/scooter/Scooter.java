@@ -85,12 +85,8 @@ public class Scooter {
   }
 
   public boolean isReserved(ReservationTime time) {
-    for (Reservation reservation : reservations) {
-      if (reservation.isDuplicatedTime(time)) {
-        return true;
-      }
-    }
-    return false;
+    return reservations.stream()
+        .anyMatch(reservation -> reservation.isReserved(time));
   }
 
   public void addReservation(Reservation reservation) {

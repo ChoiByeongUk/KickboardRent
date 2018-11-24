@@ -3,12 +3,13 @@ package com.knu.ssingssing2.model.reservation;
 import com.knu.ssingssing2.exception.UnavailableException;
 import com.knu.ssingssing2.model.Location;
 import com.knu.ssingssing2.model.scooter.Scooter;
-import java.time.LocalDateTime;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -49,16 +50,20 @@ public class Reservation {
 
   private ReservationTime reservationTime;
 
+  @Enumerated(EnumType.STRING)
+  private ReservationState reservationState;
+
   public Reservation() {
   }
 
   public Reservation(Long id, Scooter scooter,
       ReservationLocation location,
-      ReservationTime reservationTime) {
+      ReservationTime reservationTime, ReservationState reservationState) {
     this.id = id;
     this.scooter = scooter;
     this.location = location;
     this.reservationTime = reservationTime;
+    this.reservationState = reservationState;
   }
 
   public void changeReturnLocation(Location returnLocation) {
@@ -80,11 +85,23 @@ public class Reservation {
     changeRentalLocation(scooter.getLocation());
   }
 
-  public boolean isDuplicatedTime(LocalDateTime time) {
-    return reservationTime.isDuplicated(time);
+  public void changeStateToCanceled() {
+    this.reservationState = ReservationState.CANCELED;
   }
 
-  public boolean isDuplicatedTime(ReservationTime time) {
+  public void changeStateToUsed() {
+    this.reservationState = ReservationState.USED;
+  }
+
+  public boolean isReserved(ReservationTime time) {
+    return isReserved() && isDuplicatedTime(time);
+  }
+
+  private boolean isReserved() {
+    return reservationState.equals(ReservationState.RESERVED);
+  }
+
+  private boolean isDuplicatedTime(ReservationTime time) {
     return reservationTime.isDuplicated(time);
   }
 

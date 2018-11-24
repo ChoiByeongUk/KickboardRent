@@ -25,6 +25,10 @@ public class ScooterResponse {
   private String state;
 
   @JsonProperty("kickboard_location")
-  private Location location;
+  private LocationRequest location;
 
+  public void setLocation(Location location) {
+    this.location = new LocationRequest(location.getLatitude(),
+        location.getLongitude(), location.getLocation());
+  }
 }

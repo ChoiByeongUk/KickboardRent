@@ -6,6 +6,7 @@ import static org.junit.Assert.assertThat;
 
 import com.knu.ssingssing2.exception.UnavailableException;
 import com.knu.ssingssing2.model.Location;
+import com.knu.ssingssing2.model.reservation.Reservation;
 import com.knu.ssingssing2.model.reservation.ReservationTime;
 import com.knu.ssingssing2.model.scooter.Scooter;
 import com.knu.ssingssing2.model.scooter.ScooterManufacture;
@@ -90,7 +91,7 @@ public class ScooterReservationTest {
 
     List<ScooterResponse> scooters = reservationService
         .findAllAvailableReservationScootersWithModelAndLocation("Nine Bot", rentalLocation, time);
-    assertThat(scooters.size(), is(7));
+    assertThat(scooters.size(), is(6));
   }
 
   @Test
@@ -109,20 +110,6 @@ public class ScooterReservationTest {
   @Test
   public void findAllAvailableReservationScooterListsWithLocationAndCurrentTime() {
     createReservationDummyData();
-    ScooterManufacture scooterManufacture;
-    scooterManufacture = new ScooterManufacture("Samsung");
-    scooterManufactureRepository.save(scooterManufacture);
-
-    scooterRepository.save(
-        Scooter.builder()
-            .manufacture(scooterManufacture)
-            .modelName("Galaxy")
-            .serial(dummySerial(32))
-            .state(ScooterState.AVAILABLE)
-            .location(new Location(200, 200, "경북대 쪽문"))
-            .build()
-    );
-
     String rentalLocation = "경북대 쪽문";
     LocalDateTime start = LocalDateTime.parse("2018-11-11T11:00:00.00");
     LocalDateTime end = LocalDateTime.parse("2018-11-11T14:30:00.00");
@@ -130,33 +117,36 @@ public class ScooterReservationTest {
 
     List<ScooterResponse> scooters = reservationService
         .findAllAvailableReservationScootersWithLocation(rentalLocation, time);
-    assertThat(scooters.size(), is(8));
+    assertThat(scooters.size(), is(6));
   }
 
   @Test
   public void findAllAvailableReservationScooterListsWithNullLocationAndCurrentTime() {
     createReservationDummyData();
-    ScooterManufacture scooterManufacture;
-    scooterManufacture = new ScooterManufacture("Samsung");
-    scooterManufactureRepository.save(scooterManufacture);
-
-    scooterRepository.save(
-        Scooter.builder()
-            .manufacture(scooterManufacture)
-            .modelName("Galaxy")
-            .serial(dummySerial(32))
-            .state(ScooterState.AVAILABLE)
-            .location(new Location(200, 200, "경북대 북문"))
-            .build()
-    );
-
     LocalDateTime start = LocalDateTime.parse("2018-11-11T11:00:00.00");
     LocalDateTime end = LocalDateTime.parse("2018-11-11T14:30:00.00");
     ReservationTime time = new ReservationTime(start, end);
 
     List<ScooterResponse> scooters = reservationService
         .findAllAvailableReservationScootersWithLocation(null, time);
-    assertThat(scooters.size(), is(8));
+    assertThat(scooters.size(), is(6));
+  }
+
+  @Test
+  public void cancelReservation() {
+    createReservationDummyData();
+    List<Reservation> reservationList = reservationRepository.findAll();
+    Reservation reservation = reservationList.get(0);
+
+    LocalDateTime start = LocalDateTime.parse("2018-11-11T11:00:00.00");
+    LocalDateTime end = LocalDateTime.parse("2018-11-11T14:30:00.00");
+    ReservationTime time = new ReservationTime(start, end);
+
+    reservationService.cancelReservation(reservation.getId());
+
+    List<ScooterResponse> scooters = reservationService.
+        findAllAvailableReservationScootersWithLocation(null, time);
+    assertThat(scooters.size(), is(7));
   }
 
   private void createReservationDummyData() {

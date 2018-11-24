@@ -26,15 +26,9 @@ public class ReservationTime {
     return endTime;
   }
 
-  public boolean isDuplicated(LocalDateTime now) {
-    return now.compareTo(startTime) >= 0 && now.compareTo(endTime) <= 0;
-  }
-
   public boolean isDuplicated(ReservationTime time) {
-    LocalDateTime start = time.getStartTime();
-    LocalDateTime end = time.getEndTime();
-
-    return isDuplicated(start) || isDuplicated(end);
+    return this.endTime.compareTo(time.getStartTime()) >= 0 &&
+        this.startTime.compareTo(time.getEndTime()) <= 0;
   }
 
 

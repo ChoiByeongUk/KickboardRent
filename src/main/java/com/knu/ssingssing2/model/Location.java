@@ -1,8 +1,10 @@
 package com.knu.ssingssing2.model;
 
 import javax.persistence.Embeddable;
+import lombok.Getter;
 
 @Embeddable
+@Getter
 public class Location {
 
   private double latitude;
