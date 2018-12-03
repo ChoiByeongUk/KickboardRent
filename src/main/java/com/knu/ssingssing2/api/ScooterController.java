@@ -1,8 +1,8 @@
 package com.knu.ssingssing2.api;
 
-import com.knu.ssingssing2.payload.ApiResponse;
-import com.knu.ssingssing2.payload.ScooterLocationRequest;
-import com.knu.ssingssing2.payload.ScooterResponse;
+import com.knu.ssingssing2.payload.request.ScooterLocationRequest;
+import com.knu.ssingssing2.payload.response.ApiResponse;
+import com.knu.ssingssing2.payload.response.ScooterResponse;
 import com.knu.ssingssing2.service.ScooterService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;

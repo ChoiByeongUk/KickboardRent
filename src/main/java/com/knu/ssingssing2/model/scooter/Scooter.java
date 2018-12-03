@@ -14,12 +14,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Scooter {
 
   @Id
@@ -46,26 +50,12 @@ public class Scooter {
   )
   private List<Reservation> reservations = new ArrayList<>();
 
-  public Scooter() { }
-
   public Scooter(ScooterManufacture manufacture, String modelName, String serial) {
     this.manufacture = manufacture;
     this.modelName = modelName;
     this.serial = serial;
     this.state = ScooterState.AVAILABLE;
     this.location = new Location(0, 0, null);
-  }
-
-  public Scooter(Long id, ScooterManufacture manufacture, String modelName, String serial,
-      ScooterState state, Location location,
-      List<Reservation> reservations) {
-    this.id = id;
-    this.manufacture = manufacture;
-    this.modelName = modelName;
-    this.serial = serial;
-    this.state = state;
-    this.location = location;
-    this.reservations = reservations;
   }
 
   public boolean isAvailable() {

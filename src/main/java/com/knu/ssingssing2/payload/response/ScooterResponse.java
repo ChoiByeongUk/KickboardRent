@@ -1,7 +1,8 @@
-package com.knu.ssingssing2.payload;
+package com.knu.ssingssing2.payload.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.knu.ssingssing2.model.Location;
+import com.knu.ssingssing2.payload.request.LocationRequest;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -1,7 +1,7 @@
 package com.knu.ssingssing2.util;
 
 import com.knu.ssingssing2.model.scooter.Scooter;
-import com.knu.ssingssing2.payload.ScooterResponse;
+import com.knu.ssingssing2.payload.response.ScooterResponse;
 
 public class ModelMapper {
 

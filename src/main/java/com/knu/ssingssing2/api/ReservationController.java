@@ -1,9 +1,9 @@
 package com.knu.ssingssing2.api;
 
 import com.knu.ssingssing2.model.reservation.ReservationTime;
-import com.knu.ssingssing2.payload.ApiResponse;
-import com.knu.ssingssing2.payload.ScooterReservationRequest;
-import com.knu.ssingssing2.payload.ScooterResponse;
+import com.knu.ssingssing2.payload.request.ScooterReservationRequest;
+import com.knu.ssingssing2.payload.response.ApiResponse;
+import com.knu.ssingssing2.payload.response.ScooterResponse;
 import com.knu.ssingssing2.service.ReservationService;
 import java.time.LocalDateTime;
 import java.util.List;

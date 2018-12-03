@@ -1,4 +1,4 @@
-package com.knu.ssingssing2.payload;
+package com.knu.ssingssing2.payload.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.knu.ssingssing2.model.reservation.ReservationTime;

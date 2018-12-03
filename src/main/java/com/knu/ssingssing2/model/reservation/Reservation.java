@@ -15,12 +15,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Reservation {
 
   @Id
@@ -52,19 +56,6 @@ public class Reservation {
 
   @Enumerated(EnumType.STRING)
   private ReservationState reservationState;
-
-  public Reservation() {
-  }
-
-  public Reservation(Long id, Scooter scooter,
-      ReservationLocation location,
-      ReservationTime reservationTime, ReservationState reservationState) {
-    this.id = id;
-    this.scooter = scooter;
-    this.location = location;
-    this.reservationTime = reservationTime;
-    this.reservationState = reservationState;
-  }
 
   public void changeReturnLocation(Location returnLocation) {
     Location rentalLocation = this.location.getRentalLocation();

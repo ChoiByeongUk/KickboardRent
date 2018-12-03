@@ -1,4 +1,4 @@
-package com.knu.ssingssing2.payload;
+package com.knu.ssingssing2.payload.response;
 
 public class ApiResponse {
 

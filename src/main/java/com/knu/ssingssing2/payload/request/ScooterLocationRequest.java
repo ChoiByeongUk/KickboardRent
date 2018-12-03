@@ -1,4 +1,4 @@
-package com.knu.ssingssing2.payload;
+package com.knu.ssingssing2.payload.request;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
