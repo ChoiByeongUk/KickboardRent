@@ -1,9 +1,12 @@
 package com.knu.ssingssing2;
 
 import com.knu.ssingssing2.model.Location;
+import com.knu.ssingssing2.model.Role;
+import com.knu.ssingssing2.model.RoleName;
 import com.knu.ssingssing2.model.scooter.Scooter;
 import com.knu.ssingssing2.model.scooter.ScooterManufacture;
 import com.knu.ssingssing2.model.scooter.ScooterState;
+import com.knu.ssingssing2.repository.RoleRepository;
 import com.knu.ssingssing2.repository.ScooterManufactureRepository;
 import com.knu.ssingssing2.repository.ScooterRepository;
 import java.util.Random;
@@ -13,6 +16,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class DbInitializer implements CommandLineRunner {
+
+  @Autowired
+  private RoleRepository roleRepository;
 
   private final ScooterRepository scooterRepository;
 
@@ -31,6 +37,9 @@ public class DbInitializer implements CommandLineRunner {
   }
 
   private void createDummyData() {
+    roleRepository.save(new Role(RoleName.ROLE_USER));
+    roleRepository.save(new Role(RoleName.ROLE_ADMIN));
+
     ScooterManufacture scooterManufacture;
 
     scooterManufacture = new ScooterManufacture("Xiomi");

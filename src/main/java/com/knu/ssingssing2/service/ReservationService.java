@@ -4,9 +4,11 @@ import static java.util.stream.Collectors.toList;
 
 import com.knu.ssingssing2.exception.BadRequestException;
 import com.knu.ssingssing2.exception.ReservationNotFoundException;
+import com.knu.ssingssing2.exception.ResourceNotFoundException;
 import com.knu.ssingssing2.exception.ScooterNotFoundException;
 import com.knu.ssingssing2.exception.UnavailableException;
 import com.knu.ssingssing2.model.Location;
+import com.knu.ssingssing2.model.User;
 import com.knu.ssingssing2.model.reservation.Reservation;
 import com.knu.ssingssing2.model.reservation.ReservationLocation;
 import com.knu.ssingssing2.model.reservation.ReservationState;
@@ -15,6 +17,8 @@ import com.knu.ssingssing2.model.scooter.Scooter;
 import com.knu.ssingssing2.payload.response.ApiResponse;
 import com.knu.ssingssing2.repository.ReservationRepository;
 import com.knu.ssingssing2.repository.ScooterRepository;
+import com.knu.ssingssing2.repository.UserRepository;
+import com.knu.ssingssing2.security.UserPrincipal;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +28,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ReservationService {
+
+  @Autowired
+  private UserRepository userRepository;
 
   private final ScooterRepository scooterRepository;
 
@@ -107,4 +114,13 @@ public class ReservationService {
         }).collect(toList());
   }
 
+  public List<Reservation> getReservationsByUser(String username, UserPrincipal currentUser) {
+    User user = userRepository.findByUsername(username)
+        .orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
+    if (!currentUser.getUsername().equals(username)) {
+      throw new UnavailableException("user not matched");
+    }
+
+    return user.getReservations();
+  }
 }
