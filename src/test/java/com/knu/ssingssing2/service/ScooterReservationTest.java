@@ -12,7 +12,6 @@ import com.knu.ssingssing2.model.scooter.Scooter;
 import com.knu.ssingssing2.model.scooter.ScooterManufacture;
 import com.knu.ssingssing2.model.scooter.ScooterState;
 import com.knu.ssingssing2.payload.response.ApiResponse;
-import com.knu.ssingssing2.payload.response.ScooterResponse;
 import com.knu.ssingssing2.repository.ReservationRepository;
 import com.knu.ssingssing2.repository.ScooterManufactureRepository;
 import com.knu.ssingssing2.repository.ScooterRepository;
@@ -89,7 +88,7 @@ public class ScooterReservationTest {
     LocalDateTime end = LocalDateTime.parse("2018-11-11T14:30:00.00");
     ReservationTime time = new ReservationTime(start, end);
 
-    List<ScooterResponse> scooters = reservationService
+    List<Scooter> scooters = reservationService
         .findAllAvailableReservationScootersWithModelAndLocation("Nine Bot", rentalLocation, time);
     assertThat(scooters.size(), is(6));
   }
@@ -102,7 +101,7 @@ public class ScooterReservationTest {
     LocalDateTime end = LocalDateTime.parse("2018-11-11T14:30:00.00");
     ReservationTime time = new ReservationTime(start, end);
 
-    List<ScooterResponse> scooters = reservationService
+    List<Scooter> scooters = reservationService
         .findAllAvailableReservationScootersWithModelAndLocation("Nine Bot", rentalLocation, time);
     assertThat(scooters.size(), is(0));
   }
@@ -115,7 +114,7 @@ public class ScooterReservationTest {
     LocalDateTime end = LocalDateTime.parse("2018-11-11T14:30:00.00");
     ReservationTime time = new ReservationTime(start, end);
 
-    List<ScooterResponse> scooters = reservationService
+    List<Scooter> scooters = reservationService
         .findAllAvailableReservationScootersWithLocation(rentalLocation, time);
     assertThat(scooters.size(), is(6));
   }
@@ -127,7 +126,7 @@ public class ScooterReservationTest {
     LocalDateTime end = LocalDateTime.parse("2018-11-11T14:30:00.00");
     ReservationTime time = new ReservationTime(start, end);
 
-    List<ScooterResponse> scooters = reservationService
+    List<Scooter> scooters = reservationService
         .findAllAvailableReservationScootersWithLocation(null, time);
     assertThat(scooters.size(), is(6));
   }
@@ -144,7 +143,7 @@ public class ScooterReservationTest {
 
     reservationService.cancelReservation(reservation.getId());
 
-    List<ScooterResponse> scooters = reservationService.
+    List<Scooter> scooters = reservationService.
         findAllAvailableReservationScootersWithLocation(null, time);
     assertThat(scooters.size(), is(7));
   }

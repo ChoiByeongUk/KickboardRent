@@ -13,10 +13,8 @@ import com.knu.ssingssing2.model.reservation.ReservationState;
 import com.knu.ssingssing2.model.reservation.ReservationTime;
 import com.knu.ssingssing2.model.scooter.Scooter;
 import com.knu.ssingssing2.payload.response.ApiResponse;
-import com.knu.ssingssing2.payload.response.ScooterResponse;
 import com.knu.ssingssing2.repository.ReservationRepository;
 import com.knu.ssingssing2.repository.ScooterRepository;
-import com.knu.ssingssing2.util.ModelMapper;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,14 +64,14 @@ public class ReservationService {
     return new ApiResponse(true, "scooter reservation completed");
   }
 
-  public List<ScooterResponse> findAllAvailableReservationScootersWithModelAndLocation(
+  public List<Scooter> findAllAvailableReservationScootersWithModelAndLocation(
       String modelName,
       String rentalLocation, ReservationTime time) {
     List<Scooter> scooters = scooterRepository.findAllByModelName(modelName);
     return streamData(rentalLocation, time, scooters);
   }
 
-  public List<ScooterResponse> findAllAvailableReservationScootersWithLocation(
+  public List<Scooter> findAllAvailableReservationScootersWithLocation(
       String rentalLocation,
       ReservationTime time) {
     List<Scooter> scooters = scooterRepository.findAll();
@@ -97,7 +95,7 @@ public class ReservationService {
     reservation.changeStateToCanceled();
   }
 
-  private List<ScooterResponse> streamData(String rentalLocation, ReservationTime time,
+  private List<Scooter> streamData(String rentalLocation, ReservationTime time,
       List<Scooter> scooters) {
     return scooters.stream()
         .filter(scooter -> scooter.isAvailableReservation(time))
@@ -106,8 +104,7 @@ public class ReservationService {
             return true;
           }
           return scooter.getLocation().equals(rentalLocation);
-        })
-        .map(ModelMapper::mapScooterToScooterResponse).collect(toList());
+        }).collect(toList());
   }
 
 }

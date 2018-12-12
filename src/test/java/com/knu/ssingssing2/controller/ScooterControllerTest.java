@@ -14,7 +14,6 @@ import com.knu.ssingssing2.model.Location;
 import com.knu.ssingssing2.model.scooter.Scooter;
 import com.knu.ssingssing2.model.scooter.ScooterManufacture;
 import com.knu.ssingssing2.model.scooter.ScooterState;
-import com.knu.ssingssing2.payload.request.LocationRequest;
 import com.knu.ssingssing2.payload.request.ScooterLocationRequest;
 import com.knu.ssingssing2.repository.ScooterManufactureRepository;
 import com.knu.ssingssing2.repository.ScooterRepository;
@@ -64,7 +63,11 @@ public class ScooterControllerTest {
 
   @Test
   public void updateScooterLocation() throws Exception {
-    LocationRequest newLocation = new LocationRequest(36.123, 102.142, "경북대 정문");
+    Location newLocation = new Location().builder()
+        .latitude(36.123)
+        .longitude(102.142)
+        .location("경북대 정문")
+        .build();
     ScooterLocationRequest request = new ScooterLocationRequest("ABCDEF", newLocation);
 
     ObjectMapper mapper = new ObjectMapper();

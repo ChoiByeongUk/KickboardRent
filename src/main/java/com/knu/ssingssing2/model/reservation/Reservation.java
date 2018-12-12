@@ -1,5 +1,6 @@
 package com.knu.ssingssing2.model.reservation;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.knu.ssingssing2.exception.UnavailableException;
 import com.knu.ssingssing2.model.Location;
 import com.knu.ssingssing2.model.scooter.Scooter;
@@ -52,8 +53,10 @@ public class Reservation {
   })
   private ReservationLocation location;
 
+  @JsonProperty("reservation_time")
   private ReservationTime reservationTime;
 
+  @JsonProperty("reservation_state")
   @Enumerated(EnumType.STRING)
   private ReservationState reservationState;
 

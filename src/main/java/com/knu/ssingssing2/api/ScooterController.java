@@ -1,8 +1,8 @@
 package com.knu.ssingssing2.api;
 
+import com.knu.ssingssing2.model.scooter.Scooter;
 import com.knu.ssingssing2.payload.request.ScooterLocationRequest;
 import com.knu.ssingssing2.payload.response.ApiResponse;
-import com.knu.ssingssing2.payload.response.ScooterResponse;
 import com.knu.ssingssing2.service.ScooterService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class ScooterController {
   }
 
   @GetMapping
-  public List<ScooterResponse> getAllScootersWithoutPaging() {
+  public List<Scooter> getAllScootersWithoutPaging() {
     return scooterService.getAllScooters();
   }
 

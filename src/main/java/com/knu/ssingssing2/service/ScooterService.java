@@ -5,13 +5,10 @@ import com.knu.ssingssing2.model.Location;
 import com.knu.ssingssing2.model.scooter.Scooter;
 import com.knu.ssingssing2.payload.request.ScooterLocationRequest;
 import com.knu.ssingssing2.payload.response.PagedResponse;
-import com.knu.ssingssing2.payload.response.ScooterResponse;
 import com.knu.ssingssing2.repository.ScooterRepository;
 import com.knu.ssingssing2.util.AppConstants;
-import com.knu.ssingssing2.util.ModelMapper;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -29,7 +26,7 @@ public class ScooterService {
     this.scooterRepository = scooterRepository;
   }
 
-  public PagedResponse<ScooterResponse> getAllScooters(int page, int size) {
+  public PagedResponse<Scooter> getAllScooters(int page, int size) {
     validatePageNumberAndSize(page, size);
 
     Pageable pageable = PageRequest.of(page, size, Sort.Direction.ASC, "id");
@@ -40,27 +37,22 @@ public class ScooterService {
           scooters.getSize(), scooters.getTotalElements(), scooters.getTotalPages(), scooters.isLast());
     }
 
-    List<ScooterResponse> scooterResponses = scooters.map(ModelMapper::mapScooterToScooterResponse)
-        .getContent();
-
-    return new PagedResponse<>(scooterResponses, scooters.getNumber(),
+    return new PagedResponse<>(scooters.getContent(), scooters.getNumber(),
       scooters.getSize(), scooters.getTotalElements(), scooters.getTotalPages(), scooters.isLast());
   }
 
-  public List<ScooterResponse> getAllScooters() {
-    List<Scooter> scooters = scooterRepository.findAll();
-    return scooters.stream().map(
-        ModelMapper::mapScooterToScooterResponse).collect(Collectors.toList());
+  public List<Scooter> getAllScooters() {
+    return scooterRepository.findAll();
   }
 
-  public ScooterResponse updateScooterLocation(ScooterLocationRequest request) {
+  public Scooter updateScooterLocation(ScooterLocationRequest request) {
     Scooter scooter = scooterRepository.findOneBySerial(request.getSerial());
-    Location newLocation = request.getLocation().toEntity();
+    Location newLocation = request.getLocation();
 
     scooter.changeLocation(newLocation);
     scooterRepository.save(scooter);
 
-    return ModelMapper.mapScooterToScooterResponse(scooter);
+    return scooter;
   }
 
   private void validatePageNumberAndSize(int page, int size) {

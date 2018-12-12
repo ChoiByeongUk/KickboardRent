@@ -1,11 +1,13 @@
 package com.knu.ssingssing2.service;
 
 import static com.knu.ssingssing2.Utils.dummySerial;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import com.knu.ssingssing2.model.Location;
 import com.knu.ssingssing2.model.scooter.Scooter;
 import com.knu.ssingssing2.model.scooter.ScooterManufacture;
 import com.knu.ssingssing2.model.scooter.ScooterState;
+import com.knu.ssingssing2.payload.request.ScooterLocationRequest;
 import com.knu.ssingssing2.repository.ScooterManufactureRepository;
 import com.knu.ssingssing2.repository.ScooterRepository;
 import org.junit.Before;
@@ -41,6 +43,38 @@ public class ScooterServiceTest {
   @Test
   public void getAllScootersWithoutPaging() {
     scooterService.getAllScooters();
+  }
+
+  @Test
+  public void updateScooterLocation() {
+    ScooterManufacture manufacture = new ScooterManufacture().builder().name("Samsung").build();
+    scooterManufactureRepository.save(manufacture);
+
+    Scooter scooter = new Scooter().builder()
+        .manufacture(manufacture)
+        .serial("ABCDEFG-ABCDEFG-ABCDEFG")
+        .modelName("Galaxy")
+        .location(new Location().builder()
+            .latitude(123.123)
+            .longitude(123.123)
+            .location("KNU")
+            .build())
+        .build();
+
+    scooterRepository.save(scooter);
+    ScooterLocationRequest request =
+        new ScooterLocationRequest("ABCDEFG-ABCDEFG-ABCDEFG",
+            new Location().builder()
+                .latitude(111.111)
+                .longitude(111.111)
+                .location("SNU")
+                .build()
+        );
+    scooterService.updateScooterLocation(request);
+
+    assertThat(scooterRepository.findOneBySerial("ABCDEFG-ABCDEFG-ABCDEFG")
+        .getLocation()
+        .getLocation()).isEqualTo("SNU");
   }
 
   private void createDummyData() {

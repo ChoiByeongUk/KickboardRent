@@ -1,9 +1,9 @@
 package com.knu.ssingssing2.api;
 
 import com.knu.ssingssing2.model.reservation.ReservationTime;
+import com.knu.ssingssing2.model.scooter.Scooter;
 import com.knu.ssingssing2.payload.request.ScooterReservationRequest;
 import com.knu.ssingssing2.payload.response.ApiResponse;
-import com.knu.ssingssing2.payload.response.ScooterResponse;
 import com.knu.ssingssing2.service.ReservationService;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -38,7 +38,7 @@ public class ReservationController {
       @RequestParam(name = "start") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
       @RequestParam(name = "end") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end) {
 
-    List<ScooterResponse> responses;
+    List<Scooter> responses;
     ReservationTime time = new ReservationTime(start, end);
 
     responses = reservationService.findAllAvailableReservationScootersWithModelAndLocation(
@@ -59,7 +59,7 @@ public class ReservationController {
       @RequestParam(name = "end") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end
   ) {
 
-    List<ScooterResponse> responses;
+    List<Scooter> responses;
     ReservationTime time = new ReservationTime(start, end);
 
     responses = reservationService.findAllAvailableReservationScootersWithLocation(location, time);

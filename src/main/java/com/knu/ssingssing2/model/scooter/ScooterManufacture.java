@@ -3,6 +3,7 @@ package com.knu.ssingssing2.model.scooter;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 @Entity(name = "SCOOTER_MANUFACTURE")
@@ -15,6 +16,7 @@ public class ScooterManufacture {
 
   private String name;
 
+  @Builder
   public ScooterManufacture(String name) {
     this.name = name;
   }
