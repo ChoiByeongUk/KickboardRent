@@ -51,4 +51,12 @@ public class UserController {
       @CurrentUser UserPrincipal currentUser) {
     return reservationService.getReservationsByUser(username, currentUser);
   }
+
+  @GetMapping("/users/{username}/reservations/available")
+  @PreAuthorize("hasRole('USER')")
+  public List<Reservation> getAllReservationAvailableList(
+      @PathVariable(value = "username") String username,
+      @CurrentUser UserPrincipal currentUser) {
+    return reservationService.getAvailableReservationsByUser(username, currentUser);
+  }
 }

@@ -53,6 +53,14 @@ public class User {
   @OneToMany
   private List<Reservation> reservations = new ArrayList<>();
 
+  public void addReservation(Reservation reservation) {
+    this.reservations.add(reservation);
+  }
+
+  public void removeReservation(Reservation reservation) {
+    this.reservations.remove(reservation);
+  }
+
   public User(String name, String username, String password) {
     this.name = name;
     this.username = username;

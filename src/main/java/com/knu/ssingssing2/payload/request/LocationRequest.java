@@ -2,7 +2,9 @@ package com.knu.ssingssing2.payload.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.knu.ssingssing2.model.Location;
+import lombok.Getter;
 
+@Getter
 public class LocationRequest {
 
   @JsonProperty

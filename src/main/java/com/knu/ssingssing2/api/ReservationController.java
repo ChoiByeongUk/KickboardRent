@@ -4,13 +4,18 @@ import com.knu.ssingssing2.model.reservation.ReservationTime;
 import com.knu.ssingssing2.model.scooter.Scooter;
 import com.knu.ssingssing2.payload.request.ScooterReservationRequest;
 import com.knu.ssingssing2.payload.response.ApiResponse;
+import com.knu.ssingssing2.security.CurrentUser;
+import com.knu.ssingssing2.security.UserPrincipal;
 import com.knu.ssingssing2.service.ReservationService;
 import java.time.LocalDateTime;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +28,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/reservations")
 public class ReservationController {
+
+  private static final Logger logger = LoggerFactory.getLogger(ReservationController.class);
 
   private final ReservationService reservationService;
 
@@ -73,18 +80,22 @@ public class ReservationController {
   }
 
   @PostMapping
+  @PreAuthorize("hasRole('USER')")
   public ResponseEntity<ApiResponse> reservationScooter(
+      @CurrentUser UserPrincipal currentUser,
       @RequestBody ScooterReservationRequest request) {
-    ApiResponse apiResponse = reservationService.reservation(request.getScooterId(),
+    ApiResponse apiResponse = reservationService.reservation(currentUser, request.getScooterId(),
         request.getReturnLocation().toEntity(), request.getReservationTime().toEntity());
 
     return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
   }
 
   @DeleteMapping("/{reservationId}")
+  @PreAuthorize("hasRole('USER')")
   public ResponseEntity<ApiResponse> cancelReservation(
+      @CurrentUser UserPrincipal currentUser,
       @PathVariable("reservationId") Long reservationId) {
-    reservationService.cancelReservation(reservationId);
+    reservationService.cancelReservation(currentUser, reservationId);
     return new ResponseEntity<>(new ApiResponse(true, "success cancel reservation"), HttpStatus.OK);
   }
 }

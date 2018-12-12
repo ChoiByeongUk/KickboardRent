@@ -19,6 +19,7 @@ import com.knu.ssingssing2.repository.ReservationRepository;
 import com.knu.ssingssing2.repository.ScooterRepository;
 import com.knu.ssingssing2.repository.UserRepository;
 import com.knu.ssingssing2.security.UserPrincipal;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,8 +47,10 @@ public class ReservationService {
   }
 
   @Transactional
-  public ApiResponse reservation(Long scooterId, Location returnLocation,
+  public ApiResponse reservation(UserPrincipal currentUser, Long scooterId, Location returnLocation,
       ReservationTime reservationTime) {
+    User user = userRepository.findOneById(currentUser.getId());
+
     Scooter scooter = scooterRepository.findOneById(scooterId);
     if (scooter == null) {
       throw new ScooterNotFoundException("can not find scooter");
@@ -67,6 +70,9 @@ public class ReservationService {
         .build();
 
     scooter.addReservation(reservation);
+    user.addReservation(reservation);
+
+    reservationRepository.save(reservation);
 
     return new ApiResponse(true, "scooter reservation completed");
   }
@@ -86,7 +92,8 @@ public class ReservationService {
   }
 
   @Transactional
-  public void cancelReservation(Long reservationId) {
+  public void cancelReservation(UserPrincipal currentUser, Long reservationId) {
+    User user = userRepository.findOneById(currentUser.getId());
     Reservation reservation = reservationRepository.findOneById(reservationId);
 
     if (reservation == null) {
@@ -99,6 +106,7 @@ public class ReservationService {
       throw new BadRequestException("can not cancel reservation");
     }
 
+    user.removeReservation(reservation);
     reservation.changeStateToCanceled();
   }
 
@@ -122,5 +130,18 @@ public class ReservationService {
     }
 
     return user.getReservations();
+  }
+
+  public List<Reservation> getAvailableReservationsByUser(String username,
+      UserPrincipal currentUser) {
+    User user = userRepository.findByUsername(username)
+        .orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
+    if (!currentUser.getUsername().equals(username)) {
+      throw new UnavailableException("user not matched");
+    }
+
+    return user.getReservations().stream()
+        .filter(r -> r.getReservationTime().getStartTime().compareTo(LocalDateTime.now()) >= 0)
+        .collect(toList());
   }
 }

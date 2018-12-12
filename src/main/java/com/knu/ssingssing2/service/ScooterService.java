@@ -2,10 +2,16 @@ package com.knu.ssingssing2.service;
 
 import com.knu.ssingssing2.exception.BadRequestException;
 import com.knu.ssingssing2.model.Location;
+import com.knu.ssingssing2.model.reservation.Reservation;
 import com.knu.ssingssing2.model.scooter.Scooter;
+import com.knu.ssingssing2.model.scooter.ScooterState;
 import com.knu.ssingssing2.payload.request.ScooterLocationRequest;
+import com.knu.ssingssing2.payload.request.ScooterReturnRequest;
 import com.knu.ssingssing2.payload.response.PagedResponse;
+import com.knu.ssingssing2.repository.ReservationRepository;
 import com.knu.ssingssing2.repository.ScooterRepository;
+import com.knu.ssingssing2.repository.UserRepository;
+import com.knu.ssingssing2.security.UserPrincipal;
 import com.knu.ssingssing2.util.AppConstants;
 import java.util.Collections;
 import java.util.List;
@@ -15,9 +21,16 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ScooterService {
+
+  @Autowired
+  private ReservationRepository reservationRepository;
+
+  @Autowired
+  private UserRepository userRepository;
 
   private final ScooterRepository scooterRepository;
 
@@ -65,4 +78,13 @@ public class ScooterService {
     }
   }
 
+  @Transactional
+  public void returnScooter(UserPrincipal currentUser, ScooterReturnRequest request) {
+    Reservation reservation = reservationRepository.findOneById(request.getId());
+
+    Scooter scooter = scooterRepository.findOneById(reservation.getScooter().getId());
+    reservation.changeStateToUsed();
+    scooter.changeState(ScooterState.AVAILABLE);
+    scooter.changeLocation(request.locationToEntity());
+  }
 }

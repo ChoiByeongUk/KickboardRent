@@ -26,7 +26,7 @@ public class UserProfile {
         .filter(r ->
             r.getReservationTime()
                 .getStartTime()
-                .compareTo(LocalDateTime.now()) > 0)
+                .compareTo(LocalDateTime.now()) >= 0)
         .collect(Collectors.toList());
   }
 }
