@@ -108,6 +108,8 @@ public class ShowKickboardListActivity extends AppCompatActivity {
                         conn.setConnectTimeout(10000);
                         conn.setRequestMethod("GET");
                         conn.setRequestProperty("Content-Type", "application/json");
+                        conn.setRequestProperty("Authorization", getSharedPreferences("globalPref", MODE_PRIVATE).getString("accessToken", null));
+                        Log.d("access token", getSharedPreferences("globalPref", MODE_PRIVATE).getString("accessToken", null));
                         conn.setDoInput(true);
 
                         InputStreamReader isr = new InputStreamReader(conn.getInputStream(), "UTF-8");
@@ -134,7 +136,7 @@ public class ShowKickboardListActivity extends AppCompatActivity {
                             Location kickboardLocation = new Location(locationObject.getDouble("latitude"),
                                         locationObject.getDouble("longitude"), locationObject.getString("location_name"));
 
-                            Kickboard kickboard = new Kickboard(jsonObject.getInt("kickboard_id"), jsonObject.getString("kickboard_manufacture"),
+                            Kickboard kickboard = new Kickboard(jsonObject.getInt("id"), jsonObject.getString("kickboard_manufacture"),
                                     jsonObject.getString("kickboard_modelname"), jsonObject.getString("kickboard_serial"),
                                     jsonObject.getString("kickboard_state"), kickboardLocation);
 

@@ -3,14 +3,9 @@ package com.example.ssingssinge
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.widget.Button
-import android.widget.Toast
 import com.example.ssingssinge.Data.User
 import com.example.ssingssinge.Manager.LoginManager
 import kotlinx.android.synthetic.main.activity_join.*
-import kotlinx.android.synthetic.main.activity_join.view.*
-import org.jetbrains.anko.email
-import java.util.*
 
 /*
     TODO : 이메일 인증 구현 필요(웹서버)
@@ -46,6 +41,7 @@ class JoinActivity : AppCompatActivity() {
             } else {
                 joinButton.text="회원가입"
                 setResult(LoginManager.JOINFAILED)
+                finish()
             }
         }
     }

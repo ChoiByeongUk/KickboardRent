@@ -1,11 +1,11 @@
 package com.example.ssingssinge
 
-import android.content.Intent
+import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.Snackbar
+import android.util.Log
 import android.widget.Button
-import android.widget.TextView
 import com.example.ssingssinge.Data.User
 import com.example.ssingssinge.Manager.LoginManager
 import kotlinx.android.synthetic.main.activity_login.*
@@ -23,19 +23,21 @@ class LoginActivity : AppCompatActivity() {
         val loginButton = findViewById(R.id.loginButton) as Button
 
         loginButton.setOnClickListener {
-            val email = emailText.text.toString()
+            val userName = usernameText.text.toString()
             val password = passwordText.text.toString()
 
-            val user:User = User( "null", "null", email, password)
+            val user:User = User( "null", userName, "null", password)
 
             loginButton.text = "진행중"
-            if(LoginManager.getInstance().login(user)) { // TODO : login메소드 변경 필요
+            var accessToken = LoginManager.getInstance().login(user)
+            if(accessToken != null) { // TODO : login메소드 변경 필요
                 loginButton.text="로그인"
-                val pref = defaultSharedPreferences
+                val pref = getSharedPreferences("globalPref", Context.MODE_PRIVATE)
                 val editor = pref.edit()
 
-                editor.putString("email", email).apply()
+                editor.putString("accessToken", accessToken).apply()
 
+                Log.d("SharedPreference input", accessToken)
                 setResult(LoginManager.LOGINOK)
                 finish()
             } else {

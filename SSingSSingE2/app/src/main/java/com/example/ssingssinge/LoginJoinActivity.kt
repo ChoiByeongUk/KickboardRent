@@ -42,6 +42,9 @@ class LoginJoinActivity : AppCompatActivity() {
                 if(resultCode == LoginManager.JOINOK) {
                     setResult(LoginManager.JOINOK)
                     finish()
+                } else {
+                    setResult(LoginManager.JOINFAILED)
+                    finish()
                 }
             }
         }

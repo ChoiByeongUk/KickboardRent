@@ -55,10 +55,10 @@ class MainActivity : AppCompatActivity() {
         tabs.addOnTabSelectedListener(Selector())
 
         //로그인 되지 않았다면 로그인이나 회원가입부터 시작
-        /*if(!loginManager.isLogin()) {
+        if(!loginManager.isLogin()) {
             val intent = Intent(this, LoginJoinActivity::class.java)
             startActivityForResult(intent, LOGINJOIN)
-        }*/
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

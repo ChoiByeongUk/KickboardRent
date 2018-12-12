@@ -1,9 +1,12 @@
 package com.example.ssingssinge.Manager;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.example.ssingssinge.Data.User;
 import com.example.ssingssinge.R;
+import com.google.gson.JsonObject;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -27,7 +30,7 @@ public class LoginManager {
 
     private static boolean loginStatus;
     private static boolean joinStatus;
-    private static String webServer = "http://10.0.2.2:5000";
+    private static String webServer = "http://10.0.2.2:8080/api";
     private static boolean process;
     private static LoginManager loginManager = null;
 
@@ -47,10 +50,12 @@ public class LoginManager {
         joinStatus = false;
         process = false;
 
-        AsyncTask.execute(new Runnable() {
+        AsyncTask.execute(
+                new Runnable() {
             @Override
             public void run() {
-                String requestUrl = webServer + "/join";
+                String requestUrl = webServer + "/auth/signup";
+                Log.d("request Uri", requestUrl);
                 try {
                     URL url = new URL(requestUrl);
 
@@ -65,20 +70,34 @@ public class LoginManager {
                         JSONObject jsonObject = new JSONObject();
                         jsonObject.put("name", user.getName());
                         jsonObject.put("username", user.getUsername());
-                        jsonObject.put("email", user.getEmail());
                         jsonObject.put("password", user.getPassword());
 
-                        DataOutputStream output = new DataOutputStream(conn.getOutputStream());
+                        Log.d("request", jsonObject.toString());
+                        OutputStream output = conn.getOutputStream();
                         output.write(jsonObject.toString().getBytes());
                         output.flush();
-                        output.close();
 
                         int resCode = conn.getResponseCode();
-                        Log.d("Join Res Code : ", "" + resCode);
-                        if(resCode == 200)
-                            joinStatus = true;
+                        Log.d("Join result ", resCode+"");
+
+                        output.close();
+                        /*InputStreamReader isr = new InputStreamReader(conn.getInputStream(), "UTF-8");
+                        BufferedReader reader = new BufferedReader(isr);
+                        String tempStr;
+                        StringBuilder builder = new StringBuilder();
+
+                        while((tempStr = reader.readLine()) != null) {
+                            builder.append(tempStr + "\n");
+                        }
+                        isr.close();
+                        reader.close();
+
+                        String result = builder.toString();
+                        Log.d("result : ", result);*/
 
                         process = true;
+                        joinStatus = true;
+                        Log.d("Finished", "Join finished");
                     }
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
@@ -99,16 +118,17 @@ public class LoginManager {
 
 
     //     TODO : 로그인 기능 구현 필요(DB 연동)
-    public boolean login(final User user) {
+    public String login(final User user) {
         loginStatus = false;
         process = false;
         String email = user.getEmail();
         String password = user.getPassword();
+        final String[] accessToken = new String[1];
 
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
-                String requestUrl = webServer + "/login";
+                String requestUrl = webServer + "/auth/signin";
                 try {
                     URL url = new URL(requestUrl);
 
@@ -121,7 +141,7 @@ public class LoginManager {
                         conn.setDoOutput(true);
 
                         JSONObject jsonObject = new JSONObject();
-                        jsonObject.put("email", user.getEmail());
+                        jsonObject.put("username", user.getUsername());
                         jsonObject.put("password", user.getPassword());
 
                         DataOutputStream output = new DataOutputStream(conn.getOutputStream());
@@ -129,11 +149,26 @@ public class LoginManager {
                         output.flush();
                         output.close();
 
-                        int resCode = conn.getResponseCode();
-                        Log.d("Login Res Code : ", "" + resCode);
-                        if (resCode == 200)
-                            loginStatus = true;
+                        InputStreamReader isr = new InputStreamReader(conn.getInputStream(), "UTF-8");
+                        BufferedReader reader = new BufferedReader(isr);
+                        String tempStr;
+                        StringBuilder builder = new StringBuilder();
 
+                        while((tempStr = reader.readLine()) != null) {
+                            builder.append(tempStr + "\n");
+                        }
+
+                        isr.close();
+                        reader.close();
+
+                        String result = builder.toString();
+                        JSONObject resultObject = new JSONObject(result);
+
+                        Log.d("result ", resultObject.toString());
+
+                        accessToken[0] = resultObject.getString("tokenType") + " " + resultObject.getString("accessToken");
+
+                        loginStatus = true;
                         process = true;
                     }
                 } catch (IOException e) {
@@ -146,7 +181,7 @@ public class LoginManager {
 
         while(process == false) { }
 
-        return loginStatus;
+        return accessToken[0];
     }
 
     public boolean isLogin() {

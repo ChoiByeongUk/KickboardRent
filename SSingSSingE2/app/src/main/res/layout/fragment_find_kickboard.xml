@@ -54,9 +54,10 @@
                     android:layout_marginTop="20dp"/>
         </LinearLayout>
 
-        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="30dp">
+        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+                      android:orientation="horizontal"
+                      android:layout_gravity="center_horizontal"
+                      android:layout_marginTop="30dp" android:id="@+id/kickboardType">
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="킥보드 종류"/>
             <Spinner
                     android:id="@+id/kickboardTypeSpinner"
