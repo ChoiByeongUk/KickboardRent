@@ -67,6 +67,7 @@ class ReserveActivity : AppCompatActivity() {
                         "Authorization",
                         getSharedPreferences("globalPref", Context.MODE_PRIVATE).getString("accessToken", null)
                     )
+                    Log.d("auth", getSharedPreferences("globalPref", Context.MODE_PRIVATE).getString("accessToken", null))
                     conn.setRequestProperty("Content-Type", "application/json")
                     conn.doInput = true
                     conn.doOutput = true
