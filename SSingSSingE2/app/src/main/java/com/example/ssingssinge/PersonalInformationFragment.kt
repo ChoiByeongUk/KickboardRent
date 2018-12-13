@@ -39,12 +39,6 @@ class PersonalInformationFragment : Fragment() {
             mainActivity.searchReservedKickboard()
         }
 
-        val buttonCancel = rootView.findViewById(R.id.buttonCancelReserve) as Button
-
-        buttonCancel.setOnClickListener {
-            mainActivity.cancelReservation()
-        }
-
 
 
         return rootView

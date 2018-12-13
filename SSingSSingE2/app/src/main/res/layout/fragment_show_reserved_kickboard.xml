@@ -6,7 +6,7 @@
 
     <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
         <TextView
                 android:id="@+id/textView"
@@ -14,32 +14,115 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="40dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
-                android:text="text"
+                android:text="예약내역"
                 android:textSize="30dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/listView"/>
+        />
 
-        <ListView
-                android:id="@+id/listView"
-                android:layout_width="0dp"
-                android:layout_height="508dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
+        <ImageView
+                android:layout_width="130dp"
+                android:layout_height="132dp" app:srcCompat="@drawable/ninebot"
+                android:id="@+id/kickboardImage" app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginLeft="32dp"
+                android:layout_marginStart="32dp" android:layout_marginTop="24dp"
+                app:layout_constraintTop_toBottomOf="@+id/textView"/>
+        <TextView
+                android:text="모델명 : "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/kickboardModelText" app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp" app:layout_constraintStart_toEndOf="@+id/kickboardImage"
+                android:layout_marginLeft="8dp" android:layout_marginStart="8dp"
+                android:textSize="24sp"
+                app:layout_constraintHorizontal_bias="0.098" android:layout_marginTop="40dp"
+                app:layout_constraintTop_toBottomOf="@+id/textView"/>
+        <TextView
+                android:text="고유번호 : "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/kickboardSerialText" app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
-                android:layout_marginBottom="8dp"
-                android:background="@android:color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintHorizontal_bias="0.0" app:layout_constraintTop_toBottomOf="@+id/textView">
-
-        </ListView>
+                android:layout_marginLeft="8dp" android:layout_marginStart="8dp" android:layout_marginTop="24dp"
+                app:layout_constraintTop_toBottomOf="@+id/kickboardModelText" android:textSize="14sp"
+                app:layout_constraintHorizontal_bias="0.13" android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toTopOf="@+id/startDateText" app:layout_constraintVertical_bias="0.853"
+                app:layout_constraintStart_toStartOf="parent"/>
+        <TextView
+                android:text="시작시간 : "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/startDateText" android:layout_marginTop="56dp"
+                app:layout_constraintTop_toBottomOf="@+id/kickboardImage" app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="8dp" android:layout_marginRight="8dp"
+                app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp" app:layout_constraintHorizontal_bias="0.138" android:textSize="18sp"/>
+        <TextView
+                android:text="반납시간 : "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/endDateText"
+                android:textSize="18sp" android:layout_marginTop="24dp"
+                app:layout_constraintTop_toBottomOf="@+id/startDateText" android:layout_marginStart="8dp"
+                app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="8dp"
+                android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginRight="8dp" app:layout_constraintHorizontal_bias="0.137"/>
+        <TextView
+                android:text="출발위치 : "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/startLocationText"
+                android:textSize="18sp" android:layout_marginTop="24dp"
+                app:layout_constraintTop_toBottomOf="@+id/endDateText" android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent" android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp" app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginLeft="8dp" app:layout_constraintHorizontal_bias="0.083"/>
+        <TextView
+                android:text="반납위치 : "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/endLocationText" app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp" app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginLeft="8dp" android:layout_marginStart="8dp" android:layout_marginTop="24dp"
+                app:layout_constraintTop_toBottomOf="@+id/startLocationText"
+                app:layout_constraintHorizontal_bias="0.083"
+                android:textSize="18sp"/>
+        <Button
+                android:text="이전"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/prevButton" app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp" android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/endLocationText" android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+        <Button
+                android:text="다음"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/nextButton" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="20dp"
+                android:layout_marginRight="20dp" app:layout_constraintStart_toEndOf="@+id/prevButton"
+                android:layout_marginLeft="8dp" android:layout_marginStart="8dp" android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="parent" android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/endLocationText"
+                app:layout_constraintHorizontal_bias="1.0"/>
+        <Button
+                android:text="예약취소"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/cancelButton" app:layout_constraintStart_toEndOf="@+id/prevButton"
+                android:layout_marginLeft="8dp" android:layout_marginStart="8dp"
+                app:layout_constraintEnd_toStartOf="@+id/nextButton" android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp" android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="parent" android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/endLocationText"/>
 
     </android.support.constraint.ConstraintLayout>
 

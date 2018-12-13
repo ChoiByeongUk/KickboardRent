@@ -36,7 +36,7 @@ class LoginActivity : AppCompatActivity() {
                 val editor = pref.edit()
 
                 editor.putString("accessToken", accessToken).apply()
-
+                editor.putString("username", userName).apply()
                 Log.d("SharedPreference input", accessToken)
                 setResult(LoginManager.LOGINOK)
                 finish()

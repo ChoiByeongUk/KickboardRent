@@ -1,5 +1,6 @@
 package com.example.ssingssinge
 
+import android.content.Context
 import android.os.AsyncTask
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -57,6 +58,10 @@ class ReserveActivity : AppCompatActivity() {
                 if (conn != null) {
                     conn.connectTimeout = 10000
                     conn.requestMethod = "POST"
+                    conn.setRequestProperty(
+                        "Authorization",
+                        getSharedPreferences("globalPref", Context.MODE_PRIVATE).getString("accessToken", null)
+                    )
                     conn.setRequestProperty("Content-Type", "application/json")
                     conn.doInput = true
                     conn.doOutput = true
@@ -84,10 +89,13 @@ class ReserveActivity : AppCompatActivity() {
         }
 
         if(reservationStatus == true) {
-            if(resCode == 201)
-                textView.text = "예약완료"
-            else
-                textView.text = "예약실패"
+            if(resCode == 201) {
+                setResult(MainActivity.OK)
+                finish()
+            } else {
+                setResult(MainActivity.FAIL)
+                finish()
+            }
         }
     }
 }

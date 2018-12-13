@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
 
     private val findKickboardFragment:FindKickboardFragment = FindKickboardFragment()
     private val startKickboardFragment:StartKickboardFragment = StartKickboardFragment()
-    private val personalInformationFragment:PersonalInformationFragment = PersonalInformationFragment()
+    private val showReservedKickboardFragment:ShowReservedKickboardFragment = ShowReservedKickboardFragment()
     private lateinit var mainLayout:ConstraintLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,37 +58,6 @@ class MainActivity : AppCompatActivity() {
         if(!loginManager.isLogin()) {
             val intent = Intent(this, LoginJoinActivity::class.java)
             startActivityForResult(intent, LOGINJOIN)
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        when(requestCode) {
-            LOGINJOIN   ->  {
-                if(resultCode == LoginManager.LOGINOK) {
-                    val pref = defaultSharedPreferences
-                    Snackbar.make(mainLayout, "로그인 성공\nid : ${pref.getString("email", "null")}", Snackbar.LENGTH_SHORT).show()
-                } else if(resultCode == LoginManager.JOINOK) {
-                    val pref = PreferenceManager.getDefaultSharedPreferences(this)
-                    Snackbar.make(mainLayout, "회원가입 성공\nid : ${pref.getString("username", "null")}", Snackbar.LENGTH_SHORT).show()
-                } else {
-                    val intent = Intent(this, LoginJoinActivity::class.java)
-                    startActivityForResult(intent, LOGINJOIN)
-                }
-            }
-
-            SHOWLIST    ->  {
-                if(resultCode == OK) {
-                    var kickboard_id = data?.getIntExtra("kickboard_id", 0)!!
-                    var latitude = data?.getDoubleExtra("return_location_latitude", 0.0)!!
-                    var longitude = data?.getDoubleExtra("return_location_longitude", 0.0)!!
-                    var location_name = data?.getStringExtra("return_location_location_name")!!
-                    var start_time = data?.getStringExtra("reservation_time_start_time")!!
-                    var end_time = data?.getStringExtra("reservation_time_end_time")!!
-                    reserve(kickboard_id, latitude, longitude, location_name, start_time, end_time)// TODO : 예약기능 구현 필요
-                } else {
-                    Toast.makeText(applicationContext, "Error", Toast.LENGTH_SHORT).show()
-                }
-            }
         }
     }
 
@@ -114,14 +83,46 @@ class MainActivity : AppCompatActivity() {
         startActivityForResult(intent, RESERVE)
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when(requestCode) {
+            LOGINJOIN   ->  {
+                if(resultCode == LoginManager.LOGINOK) {
+                    val pref = defaultSharedPreferences
+                    Snackbar.make(mainLayout, "로그인 성공\nid : ${pref.getString("email", "null")}", Snackbar.LENGTH_SHORT).show()
+                } else if(resultCode == LoginManager.JOINOK) {
+                    val pref = PreferenceManager.getDefaultSharedPreferences(this)
+                    Snackbar.make(mainLayout, "회원가입 성공\nid : ${pref.getString("username", "null")}", Snackbar.LENGTH_SHORT).show()
+                } else {
+                    val intent = Intent(this, LoginJoinActivity::class.java)
+                    startActivityForResult(intent, LOGINJOIN)
+                    Snackbar.make(mainLayout, "예약 성공\n", Snackbar.LENGTH_SHORT).show()
+                }
+            }
+
+            SHOWLIST    ->  {
+                if(resultCode == OK) {
+                    var kickboard_id = data?.getIntExtra("kickboard_id", 0)!!
+                    var latitude = data?.getDoubleExtra("return_location_latitude", 0.0)!!
+                    var longitude = data?.getDoubleExtra("return_location_longitude", 0.0)!!
+                    var location_name = data?.getStringExtra("return_location_location_name")!!
+                    var start_time = data?.getStringExtra("reservation_time_start_time")!!
+                    var end_time = data?.getStringExtra("reservation_time_end_time")!!
+                    reserve(kickboard_id, latitude, longitude, location_name, start_time, end_time)// TODO : 예약기능 구현 필요
+                } else {
+                    Toast.makeText(applicationContext, "Error", Toast.LENGTH_SHORT).show()
+                }
+            }
+            RESERVE     -> {
+                if(resultCode == OK) {
+                    val showReservedKickboardFragment = ShowReservedKickboardFragment()
+                }
+            }
+        }
+    }
+
     fun searchReservedKickboard() {
         val showReservedKickboardFragment:Fragment = ShowReservedKickboardFragment()
         supportFragmentManager.beginTransaction().replace(R.id.container, showReservedKickboardFragment).commit()
-    }
-
-    fun cancelReservation() {
-        val cancelReservationFragment:Fragment = CancelReservationFragment()
-        supportFragmentManager.beginTransaction().replace(R.id.container, cancelReservationFragment).commit()
     }
 
 
@@ -131,8 +132,7 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-        override fun onTabUnselected(p0: TabLayout.Tab?) {
-
+        override fun onTabUnselected(tab: TabLayout.Tab?) {
         }
 
         override fun onTabSelected(tab: TabLayout.Tab?) {
@@ -147,11 +147,11 @@ class MainActivity : AppCompatActivity() {
                     selected = startKickboardFragment
                 }
                 2   ->  {
-                    selected = personalInformationFragment
+                    selected = showReservedKickboardFragment
                 }
             }
-
-            supportFragmentManager.beginTransaction().replace(R.id.container, selected).commit()
+            var transaction = supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.container, selected).commit()
         }
     }
 }
