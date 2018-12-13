@@ -5,6 +5,7 @@ import android.content.Intent.getIntent
 import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
+import android.os.Handler
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.util.Log
@@ -51,6 +52,8 @@ class ShowReservedKickboardFragment : Fragment() {
     lateinit var startLocationText:TextView
     lateinit var endLocationText:TextView
     lateinit var mainActivity: MainActivity
+    var handler = Handler()
+
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         mainActivity = activity as MainActivity
@@ -71,7 +74,6 @@ class ShowReservedKickboardFragment : Fragment() {
         val pref = activity?.getSharedPreferences("globalPref", Context.MODE_PRIVATE)
         val username = pref?.getString("username", "null")
         val accessToken = pref?.getString("accessToken", "null")
-        init(username, accessToken)
 
         kickboardModelText = rootView.findViewById(R.id.kickboardModelText) as TextView
         kickboardSerialText = rootView.findViewById(R.id.kickboardSerialText) as TextView
@@ -80,7 +82,14 @@ class ShowReservedKickboardFragment : Fragment() {
         startLocationText = rootView.findViewById(R.id.startLocationText) as TextView
         endLocationText = rootView.findViewById(R.id.endLocationText) as TextView
 
-        showView()
+        kickboards.clear()
+        returnLocations.clear()
+        startTimes.clear()
+        endTimes.clear()
+        states.clear()
+        nowIndex = 0
+        maxSize = 0
+        init(username, accessToken)
 
         val prevButton = rootView.findViewById(R.id.prevButton) as Button
         val nextButton = rootView.findViewById(R.id.nextButton) as Button
@@ -120,8 +129,8 @@ class ShowReservedKickboardFragment : Fragment() {
 
     fun cancelReservation(accessToken: String?, reservationId: Int) {
         var waiting = false
-        AsyncTask.execute {
-            var requestUrl = "http://10.0.2.2:8080/api/reservations/" + reservationId
+        var runnable:Runnable = Runnable {
+            var requestUrl = "http://192.168.0.17:8080/api/reservations/" + reservationId
 
             try {
 
@@ -138,7 +147,10 @@ class ShowReservedKickboardFragment : Fragment() {
 
                     var resCode:Int = conn.responseCode
                     Log.d("Delete result: ", resCode.toString())
-                    waiting = true
+
+                    handler.post{
+                        showView()
+                    }
                 }
             } catch (e: IOException) {
                 e.printStackTrace()
@@ -147,8 +159,8 @@ class ShowReservedKickboardFragment : Fragment() {
             }
         }
 
-        while (waiting == false) {
-        }
+        var thread = Thread(runnable)
+        thread.start()
     }
 
 
@@ -165,24 +177,24 @@ class ShowReservedKickboardFragment : Fragment() {
             startLocationText.text = "출발위치 : ${kickboards[nowIndex].kickboard_location.locationName}"
             endLocationText.text = "반납위치 : ${returnLocations[nowIndex].locationName}"
         } else {
-            kickboardModelText.text = "모델명:" + "\n"
-            kickboardSerialText.text = "고유번호 : "
+            kickboardModelText.text = ""
+            kickboardSerialText.text = ""
 
 
-            startDateText.text = "시작시간 : "
-            endDateText.text = "반납시간 : "
+            startDateText.text = ""
+            endDateText.text = ""
 
-            startLocationText.text = "출발위치 : "
-            endLocationText.text = "반납위치 : "
+            startLocationText.text = ""
+            endLocationText.text = ""
+            kickboardImage.visibility = View.INVISIBLE
         }
     }
 
     fun init(username: String?, accessToken: String?) {
-        val webserver = "http://10.0.2.2:8080/api/users/"
-        var waiting = false
+        val webserver = "http://192.168.0.17:8080/api/users/"
 
-        AsyncTask.execute {
-            var requestUrl = "${webserver}$username/reservations"
+        var runnable:Runnable = Runnable {
+            var requestUrl = "${webserver}$username/reservations/available"
 
             Log.d("Request uri", requestUrl)
             try {
@@ -255,17 +267,19 @@ class ShowReservedKickboardFragment : Fragment() {
                         states.add(status)
                         maxSize++
                     }
+
+                    handler.post{
+                        showView()
+                    }
                 }
             } catch (e: IOException) {
                 e.printStackTrace()
             } catch (e: JSONException) {
                 e.printStackTrace()
             }
-
-            waiting = true
         }
 
-        while (waiting == false) {
-        }
+        var thread:Thread = Thread(runnable)
+        thread.start()
     }
 }

@@ -3,6 +3,7 @@ package com.example.ssingssinge;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.JsonReader;
@@ -42,24 +43,25 @@ public class ShowKickboardListActivity extends AppCompatActivity {
     private KickboardAdapter kickboardListAdapter;
     private ArrayList<Kickboard> kickboardList = new ArrayList<>();
     private ListView listView;
-    public static final String webserver = "http://10.0.2.2:8080/api/reservations";
-    private static boolean waiting = false;
+    public static final String webserver = "http://192.168.0.17:8080/api/reservations";
     private String location;
+    public TextView textView;
+    public Handler handler;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_kickboard_list);
-        waiting = false;
         location = getIntent().getStringExtra("location");
+        textView = (TextView)findViewById(R.id.textView);
+        listView = findViewById(R.id.listView);
+        kickboardListAdapter = new KickboardAdapter(getApplicationContext());
+        handler = new Handler();
+
+        kickboardList.clear();
+        kickboardListAdapter.clear();
         init();
         Log.d("대여가능 킥보드 수 : ", kickboardList.size()+"");
 
-        TextView textView = (TextView)findViewById(R.id.textView);
-        textView.setText(location + "지역내의 킥보드 검색 결과");
-
-        kickboardListAdapter = new KickboardAdapter(getApplicationContext());
-        listView = findViewById(R.id.listView);
-        kickboardListAdapter.addItems(kickboardList);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -74,13 +76,10 @@ public class ShowKickboardListActivity extends AppCompatActivity {
                 intent.putExtra("reservation_time_start_time", getIntent().getStringExtra("startDate"));
                 intent.putExtra("reservation_time_end_time", getIntent().getStringExtra("endDate"));
 
-
                 setResult(MainActivity.OK, intent);
                 finish();
             }
         });
-        listView.setAdapter(kickboardListAdapter);
-
     }
 
     @Override
@@ -90,7 +89,7 @@ public class ShowKickboardListActivity extends AppCompatActivity {
     }
 
     void init() {
-        AsyncTask.execute(new Runnable() {
+        Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 String requestUrl = webserver + "?start=" + getIntent().getStringExtra("startDate")
@@ -148,11 +147,16 @@ public class ShowKickboardListActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-                waiting = true;
+                handler.post(new Runnable() {
+                    @Override
+                   public void run() {
+                        textView.setText(location + "지역내의 킥보드 검색 결과");
+                        kickboardListAdapter.addItems(kickboardList);
+                        listView.setAdapter(kickboardListAdapter);
+                    }
+                });
             }
         });
-
-        while(waiting == false) { }
+        thread.start();
     }
 }

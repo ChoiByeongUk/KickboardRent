@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.defaultSharedPreferences
 import org.jetbrains.anko.selector
 import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.startActivityForResult
 import java.nio.channels.Selector
 
 /*
@@ -31,9 +32,12 @@ class MainActivity : AppCompatActivity() {
         const val LOGINJOIN = 1
         const val SHOWLIST = 2
         const val RESERVE = 3
+        const val SCAN = 4
+        const val RETURN = 5
         const val OK = 100
         const val FAIL = 200
         const val BACK_PRESSED = 1000
+
     }
 
     private val findKickboardFragment:FindKickboardFragment = FindKickboardFragment()
@@ -61,12 +65,19 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun scan() {
+        val intent = Intent(this, ScanActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        startActivityForResult(intent, SCAN)
+    }
+
     fun showKickboardList(location:String, kickboardType: String, startDate:String, endDate: String) {
         val intent:Intent = Intent(this, ShowKickboardListActivity::class.java)
         intent.putExtra("location", location)
         intent.putExtra("kickboardType", kickboardType)
         intent.putExtra("startDate", startDate)
         intent.putExtra("endDate", endDate)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
         startActivityForResult(intent, SHOWLIST)
     }
 
@@ -80,6 +91,8 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra("return_location_location_name", location_name)
         intent.putExtra("reservation_time_start_time", start_time)
         intent.putExtra("reservation_time_end_time", end_time)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+
         startActivityForResult(intent, RESERVE)
     }
 
@@ -92,10 +105,12 @@ class MainActivity : AppCompatActivity() {
                 } else if(resultCode == LoginManager.JOINOK) {
                     val pref = PreferenceManager.getDefaultSharedPreferences(this)
                     Snackbar.make(mainLayout, "회원가입 성공\nid : ${pref.getString("username", "null")}", Snackbar.LENGTH_SHORT).show()
-                } else {
+                } /*else {
                     val intent = Intent(this, LoginJoinActivity::class.java)
                     startActivityForResult(intent, LOGINJOIN)
-                    Snackbar.make(mainLayout, "예약 성공\n", Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(mainLayout, "예약 성공\n", Snackbar.LENGTH_SHORT).show()*/
+                else {
+                    super.onActivityResult(requestCode, resultCode, data)
                 }
             }
 
@@ -110,11 +125,19 @@ class MainActivity : AppCompatActivity() {
                     reserve(kickboard_id, latitude, longitude, location_name, start_time, end_time)// TODO : 예약기능 구현 필요
                 } else {
                     Toast.makeText(applicationContext, "Error", Toast.LENGTH_SHORT).show()
+                    super.onActivityResult(requestCode, resultCode, data)
                 }
             }
             RESERVE     -> {
                 if(resultCode == OK) {
                     val showReservedKickboardFragment = ShowReservedKickboardFragment()
+                } else {
+                    super.onActivityResult(requestCode, resultCode, data)
+                }
+            }
+            SCAN  ->  {
+                if(resultCode == OK) {
+                    Toast.makeText(applicationContext, "반납 완료", Toast.LENGTH_SHORT).show()
                 }
             }
         }

@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.AsyncTask
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import com.example.ssingssinge.Data.Kickboard
 import com.example.ssingssinge.Data.Location
@@ -20,9 +21,10 @@ import java.net.URL
  */
 class ReserveActivity : AppCompatActivity() {
 
-    val webServer = "http://10.0.2.2:8080/api/reservations"
+    val webServer = "http://192.168.0.17:8080/api/reservations"
     var reservationStatus = false
     var resCode:Int = -1
+    lateinit var handler: Handler
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reserve)
@@ -33,6 +35,9 @@ class ReserveActivity : AppCompatActivity() {
         var location_name: String = intent.getStringExtra("return_location_location_name")
         var start_time:String = intent.getStringExtra("reservation_time_start_time")
         var end_time:String = intent.getStringExtra("reservation_time_end_time")
+        kickboardModelText.text = "모델명 : \nNine Bot"
+        startDateText.text = "시작시간 : $start_time"
+        endDateText.text = "반납시간 : $end_time"
 
         var requestBody: String = """{
             |"kickboard_id": ${kickboard_id},
@@ -73,10 +78,6 @@ class ReserveActivity : AppCompatActivity() {
 
                     resCode = conn.responseCode
                     Log.d("Login Res Code : ", "" + resCode)
-                    if (resCode == 201)
-                        reservationStatus = true
-
-                    reservationStatus = true
                 }
             } catch (e: IOException) {
                 e.printStackTrace()
@@ -84,10 +85,6 @@ class ReserveActivity : AppCompatActivity() {
                 e.printStackTrace()
             }
         }
-
-        while (reservationStatus == false) {
-        }
-
         if(reservationStatus == true) {
             if(resCode == 201) {
                 setResult(MainActivity.OK)

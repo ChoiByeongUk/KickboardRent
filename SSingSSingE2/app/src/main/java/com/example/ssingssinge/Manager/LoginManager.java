@@ -30,7 +30,7 @@ public class LoginManager {
 
     private static boolean loginStatus;
     private static boolean joinStatus;
-    private static String webServer = "http://10.0.2.2:8080/api";
+    private static String webServer = "http://192.168.0.17:8080/api";
     private static boolean process;
     private static LoginManager loginManager = null;
 

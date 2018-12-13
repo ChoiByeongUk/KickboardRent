@@ -7,10 +7,11 @@
 
     <ImageView
             android:layout_width="130dp"
-            android:layout_height="136dp" app:srcCompat="@drawable/ninebot" tools:layout_editor_absoluteY="94dp"
+            android:layout_height="136dp" app:srcCompat="@drawable/ninebot"
             android:id="@+id/kickboardImage" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginLeft="28dp"
-            android:layout_marginStart="28dp"/>
+            android:layout_marginLeft="32dp"
+            android:layout_marginStart="32dp" android:layout_marginTop="128dp"
+            app:layout_constraintTop_toTopOf="parent"/>
     <TextView
             android:text="예약완료"
             android:layout_width="wrap_content"
@@ -28,20 +29,10 @@
             android:id="@+id/kickboardModelText" app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp" app:layout_constraintStart_toEndOf="@+id/kickboardImage"
-            android:layout_marginLeft="8dp" android:layout_marginStart="8dp" android:layout_marginTop="24dp"
-            app:layout_constraintTop_toBottomOf="@+id/stateText" android:textSize="30sp"
-            app:layout_constraintHorizontal_bias="0.333"/>
-    <TextView
-            android:text="TextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/kickboardSerialText" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp" app:layout_constraintStart_toEndOf="@+id/kickboardImage"
-            android:layout_marginLeft="8dp" android:layout_marginStart="8dp" android:layout_marginTop="24dp"
-            app:layout_constraintTop_toBottomOf="@+id/kickboardModelText" android:textSize="30sp"
-            app:layout_constraintHorizontal_bias="0.333" android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/startDateText" app:layout_constraintVertical_bias="0.157"/>
+            android:layout_marginLeft="8dp" android:layout_marginStart="8dp"
+            android:textSize="30sp"
+            app:layout_constraintHorizontal_bias="0.397" android:layout_marginTop="92dp"
+            app:layout_constraintTop_toBottomOf="@+id/stateText"/>
     <TextView
             android:text="TextView"
             android:layout_width="wrap_content"
@@ -60,19 +51,4 @@
             android:layout_marginLeft="8dp" android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="8dp" android:layout_marginRight="8dp"
             app:layout_constraintHorizontal_bias="0.137" android:textSize="24sp"/>
-    <TextView
-            android:text="TextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/startLocationText"
-            android:textSize="24sp" tools:layout_editor_absoluteY="398dp" tools:layout_editor_absoluteX="45dp"/>
-    <TextView
-            android:text="TextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/endLocationText" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginLeft="8dp" android:layout_marginStart="8dp" android:layout_marginTop="24dp"
-            app:layout_constraintTop_toBottomOf="@+id/startLocationText" app:layout_constraintHorizontal_bias="0.137"
-            android:textSize="24sp"/>
 </android.support.constraint.ConstraintLayout>
