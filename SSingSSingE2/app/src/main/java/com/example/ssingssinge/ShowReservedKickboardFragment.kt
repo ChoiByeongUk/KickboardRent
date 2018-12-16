@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
 import android.os.Handler
+import android.support.design.widget.BottomNavigationView
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.util.Log
@@ -30,6 +31,8 @@ import java.io.IOException
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
+import android.view.MenuItem;
+import android.widget.ArrayAdapter
 
 
 /*

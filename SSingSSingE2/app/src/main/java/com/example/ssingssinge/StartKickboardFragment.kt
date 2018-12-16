@@ -38,6 +38,7 @@ class StartKickboardFragment : Fragment() {
         var scanButton = rootView.findViewById(R.id.scanButton) as Button
         scanButton.setOnClickListener {
             mainActivity.scan()
+
         }
         return rootView
     }

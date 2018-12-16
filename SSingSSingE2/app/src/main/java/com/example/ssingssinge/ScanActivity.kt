@@ -29,10 +29,8 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
 import com.google.zxing.integration.android.IntentIntegrator
 import com.google.zxing.integration.android.IntentResult
-import org.jetbrains.anko.alert
-import org.jetbrains.anko.noButton
-import org.jetbrains.anko.toast
-import org.jetbrains.anko.yesButton
+import com.journeyapps.barcodescanner.CaptureActivity
+import org.jetbrains.anko.*
 import org.json.JSONArray
 import org.json.JSONException
 import java.io.BufferedReader
@@ -79,7 +77,8 @@ class ScanActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         locationInit()
-
+        IntentIntegrator(this)?.setOrientationLocked(false)
+        IntentIntegrator(this)?.setBeepEnabled(false)
         IntentIntegrator(this).initiateScan()
     }
 
@@ -153,19 +152,20 @@ class ScanActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if(requestCode == RETURN) {
-            finish()
-        }
-        else if(requestCode == IntentIntegrator.REQUEST_CODE) {
-            var result: IntentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
-            if(result == null) {
-                Toast.makeText(this, "실패", Toast.LENGTH_LONG).show()
+
+            if (requestCode == RETURN) {
+                finish()
+            } else if (requestCode == IntentIntegrator.REQUEST_CODE) {
+                var result: IntentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
+                if (result == null) {
+                    Toast.makeText(this, "실패", Toast.LENGTH_LONG).show()
+                } else {
+                    getReservationData(result.contents)
+                }
             } else {
-                getReservationData(result.contents)
+                super.onActivityResult(requestCode, resultCode, data)
             }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data)
-        }
+
     }
 
     fun getReservationData(scanSerial: String) {
